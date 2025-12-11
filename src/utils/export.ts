@@ -30,7 +30,6 @@ export async function exportToZip(fileTree: FileTree, siteName: string): Promise
  * Generate a data URL for preview of the file tree structure
  */
 export function generateFileTreePreview(fileTree: FileTree): string {
-    const lines: string[] = []
     const paths = Object.keys(fileTree).sort()
 
     // Build tree structure

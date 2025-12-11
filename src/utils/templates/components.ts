@@ -1,17 +1,10 @@
 // Purpose: Template generators for React components
 import { ParsedIntent } from '../../types'
 
-// Get icon component based on name
-function getIconImport(icons: string[]): string {
-    const iconNames = [...new Set(icons)].filter(Boolean)
-    if (iconNames.length === 0) return ''
-    return `import { ${iconNames.join(', ')} } from 'lucide-react'`
-}
-
 export function generateNavComponent(intent: ParsedIntent): string {
-    const isDark = intent.theme === 'dark' || intent.theme === 'amazon'
+  const isDark = intent.theme === 'dark' || intent.theme === 'amazon'
 
-    return `// Purpose: Navigation component with responsive mobile menu
+  return `// Purpose: Navigation component with responsive mobile menu
 import { useState } from 'react'
 import { Menu, X } from 'lucide-react'
 
@@ -89,19 +82,19 @@ export default function Nav() {
 }
 
 export function generateHeroComponent(intent: ParsedIntent): string {
-    const isDark = intent.theme === 'dark' || intent.theme === 'amazon'
-    const toneText = {
-        professional: { headline: 'Professional Solutions for Modern Businesses', sub: 'Trusted by industry leaders worldwide' },
-        casual: { headline: 'Hey there! Let\'s build something awesome', sub: 'Join thousands of happy customers' },
-        playful: { headline: 'Ready to have some fun? 🚀', sub: 'The most exciting way to get things done' },
-        confident: { headline: 'The Future Starts Here', sub: 'Be part of the revolution' },
-        formal: { headline: 'Excellence in Every Detail', sub: 'Setting the standard for quality' },
-        friendly: { headline: 'Welcome! We\'re glad you\'re here', sub: 'Let\'s accomplish great things together' },
-    }
+  const isDark = intent.theme === 'dark' || intent.theme === 'amazon'
+  const toneText = {
+    professional: { headline: 'Professional Solutions for Modern Businesses', sub: 'Trusted by industry leaders worldwide' },
+    casual: { headline: 'Hey there! Let\'s build something awesome', sub: 'Join thousands of happy customers' },
+    playful: { headline: 'Ready to have some fun? 🚀', sub: 'The most exciting way to get things done' },
+    confident: { headline: 'The Future Starts Here', sub: 'Be part of the revolution' },
+    formal: { headline: 'Excellence in Every Detail', sub: 'Setting the standard for quality' },
+    friendly: { headline: 'Welcome! We\'re glad you\'re here', sub: 'Let\'s accomplish great things together' },
+  }
 
-    const text = toneText[intent.tone] || toneText.professional
+  const text = toneText[intent.tone] || toneText.professional
 
-    return `// Purpose: Hero section with headline and CTA
+  return `// Purpose: Hero section with headline and CTA
 import { ArrowRight, Play } from 'lucide-react'
 
 export default function Hero() {
@@ -177,41 +170,41 @@ export default function Hero() {
 }
 
 export function generateFeaturesComponent(intent: ParsedIntent): string {
-    const isDark = intent.theme === 'dark' || intent.theme === 'amazon'
-    const features = intent.features || []
+  const isDark = intent.theme === 'dark' || intent.theme === 'amazon'
+  const features = intent.features || []
 
-    // Map feature icons to Lucide icons
-    const iconMap: Record<string, string> = {
-        'BoltIcon': 'Zap',
-        'ShieldCheckIcon': 'Shield',
-        'PuzzlePieceIcon': 'Puzzle',
-        'ChatBubbleLeftRightIcon': 'MessageSquare',
-        'ChartBarIcon': 'BarChart3',
-        'CloudIcon': 'Cloud',
-        'StarIcon': 'Star',
-        'UserGroupIcon': 'Users',
-        'RocketLaunchIcon': 'Rocket',
-        'CurrencyDollarIcon': 'DollarSign',
-        'WrenchScrewdriverIcon': 'Wrench',
-        'LifebuoyIcon': 'LifeBuoy',
-    }
+  // Map feature icons to Lucide icons
+  const iconMap: Record<string, string> = {
+    'BoltIcon': 'Zap',
+    'ShieldCheckIcon': 'Shield',
+    'PuzzlePieceIcon': 'Puzzle',
+    'ChatBubbleLeftRightIcon': 'MessageSquare',
+    'ChartBarIcon': 'BarChart3',
+    'CloudIcon': 'Cloud',
+    'StarIcon': 'Star',
+    'UserGroupIcon': 'Users',
+    'RocketLaunchIcon': 'Rocket',
+    'CurrencyDollarIcon': 'DollarSign',
+    'WrenchScrewdriverIcon': 'Wrench',
+    'LifebuoyIcon': 'LifeBuoy',
+  }
 
-    const lucideIcons = features.map(f => iconMap[f.icon] || 'Star')
-    const uniqueIcons = [...new Set(lucideIcons)]
+  const lucideIcons = features.map(f => iconMap[f.icon] || 'Star')
+  const uniqueIcons = [...new Set(lucideIcons)]
 
-    const featuresData = features.map((f, i) => ({
-        ...f,
-        lucideIcon: lucideIcons[i],
-    }))
+  const featuresData = features.map((f, i) => ({
+    ...f,
+    lucideIcon: lucideIcons[i],
+  }))
 
-    return `// Purpose: Features grid section
+  return `// Purpose: Features grid section
 import { ${uniqueIcons.join(', ')} } from 'lucide-react'
 
 const features = ${JSON.stringify(featuresData.map(f => ({
-        title: f.title,
-        description: f.description,
-        icon: f.lucideIcon,
-    })), null, 2)}
+    title: f.title,
+    description: f.description,
+    icon: f.lucideIcon,
+  })), null, 2)}
 
 const iconComponents: Record<string, any> = {
   ${uniqueIcons.map(icon => `${icon}: ${icon}`).join(',\n  ')}
@@ -260,10 +253,10 @@ export default function Features() {
 }
 
 export function generatePricingComponent(intent: ParsedIntent): string {
-    const isDark = intent.theme === 'dark' || intent.theme === 'amazon'
-    const tiers = intent.pricingTiers || []
+  const isDark = intent.theme === 'dark' || intent.theme === 'amazon'
+  const tiers = intent.pricingTiers || []
 
-    return `// Purpose: Pricing table component
+  return `// Purpose: Pricing table component
 import { Check } from 'lucide-react'
 
 const tiers = ${JSON.stringify(tiers, null, 2)}
@@ -346,9 +339,9 @@ export default function Pricing() {
 }
 
 export function generateContactComponent(intent: ParsedIntent): string {
-    const isDark = intent.theme === 'dark' || intent.theme === 'amazon'
+  const isDark = intent.theme === 'dark' || intent.theme === 'amazon'
 
-    return `// Purpose: Contact form section
+  return `// Purpose: Contact form section
 import { useState } from 'react'
 import { Send, Mail, MapPin, Phone } from 'lucide-react'
 
@@ -520,9 +513,9 @@ export default function Contact() {
 }
 
 export function generateCTAComponent(intent: ParsedIntent): string {
-    const isDark = intent.theme === 'dark' || intent.theme === 'amazon'
+  const isDark = intent.theme === 'dark' || intent.theme === 'amazon'
 
-    return `// Purpose: Call-to-action section
+  return `// Purpose: Call-to-action section
 import { ArrowRight } from 'lucide-react'
 
 export default function CTA() {
@@ -557,10 +550,10 @@ export default function CTA() {
 }
 
 export function generateFooterComponent(intent: ParsedIntent): string {
-    const isDark = intent.theme === 'dark' || intent.theme === 'amazon'
-    const year = new Date().getFullYear()
+  const isDark = intent.theme === 'dark' || intent.theme === 'amazon'
+  const year = new Date().getFullYear()
 
-    return `// Purpose: Footer with links and social icons
+  return `// Purpose: Footer with links and social icons
 import { Twitter, Github, Linkedin, Mail } from 'lucide-react'
 
 const footerLinks = {

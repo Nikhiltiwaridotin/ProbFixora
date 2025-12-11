@@ -2,22 +2,22 @@
 import { ParsedIntent, GeneratedOutput, FileTree } from '../types'
 import { parsePrompt } from './promptParser'
 import {
-    generatePackageJson,
-    generateViteConfig,
-    generateTailwindConfig,
-    generateMainTsx,
-    generateIndexCss,
-    generateAppTsx,
-    generateIndexHtml,
+  generatePackageJson,
+  generateViteConfig,
+  generateTailwindConfig,
+  generateMainTsx,
+  generateIndexCss,
+  generateAppTsx,
+  generateIndexHtml,
 } from './templates/config'
 import {
-    generateNavComponent,
-    generateHeroComponent,
-    generateFeaturesComponent,
-    generatePricingComponent,
-    generateContactComponent,
-    generateCTAComponent,
-    generateFooterComponent,
+  generateNavComponent,
+  generateHeroComponent,
+  generateFeaturesComponent,
+  generatePricingComponent,
+  generateContactComponent,
+  generateCTAComponent,
+  generateFooterComponent,
 } from './templates/components'
 
 // Progress callback type
@@ -27,81 +27,81 @@ type ProgressCallback = (progress: number, step: string) => void
  * Generate a complete website from a natural language prompt
  */
 export async function generateWebsite(
-    prompt: string,
-    onProgress?: ProgressCallback
+  prompt: string,
+  onProgress?: ProgressCallback
 ): Promise<GeneratedOutput> {
-    const updateProgress = (progress: number, step: string) => {
-        onProgress?.(progress, step)
+  const updateProgress = (progress: number, step: string) => {
+    onProgress?.(progress, step)
+  }
+
+  try {
+    // Step 1: Parse the prompt
+    updateProgress(10, 'Parsing your prompt...')
+    await simulateDelay(300)
+    const parsedIntent = parsePrompt(prompt)
+
+    // Step 2: Generate configuration files
+    updateProgress(25, 'Generating project configuration...')
+    await simulateDelay(400)
+    const configFiles = generateConfigFiles(parsedIntent)
+
+    // Step 3: Generate component files
+    updateProgress(50, 'Building React components...')
+    await simulateDelay(500)
+    const componentFiles = generateComponentFiles(parsedIntent)
+
+    // Step 4: Generate utility files
+    updateProgress(70, 'Creating utilities and helpers...')
+    await simulateDelay(300)
+    const utilityFiles = generateUtilityFiles(parsedIntent)
+
+    // Step 5: Generate documentation
+    updateProgress(85, 'Generating documentation...')
+    await simulateDelay(200)
+    const docFiles = generateDocFiles(parsedIntent)
+
+    // Step 6: Compile file tree
+    updateProgress(95, 'Finalizing project structure...')
+    await simulateDelay(200)
+
+    const fileTree: FileTree = {
+      ...configFiles,
+      ...componentFiles,
+      ...utilityFiles,
+      ...docFiles,
     }
 
-    try {
-        // Step 1: Parse the prompt
-        updateProgress(10, 'Parsing your prompt...')
-        await simulateDelay(300)
-        const parsedIntent = parsePrompt(prompt)
-
-        // Step 2: Generate configuration files
-        updateProgress(25, 'Generating project configuration...')
-        await simulateDelay(400)
-        const configFiles = generateConfigFiles(parsedIntent)
-
-        // Step 3: Generate component files
-        updateProgress(50, 'Building React components...')
-        await simulateDelay(500)
-        const componentFiles = generateComponentFiles(parsedIntent)
-
-        // Step 4: Generate utility files
-        updateProgress(70, 'Creating utilities and helpers...')
-        await simulateDelay(300)
-        const utilityFiles = generateUtilityFiles(parsedIntent)
-
-        // Step 5: Generate documentation
-        updateProgress(85, 'Generating documentation...')
-        await simulateDelay(200)
-        const docFiles = generateDocFiles(parsedIntent)
-
-        // Step 6: Compile file tree
-        updateProgress(95, 'Finalizing project structure...')
-        await simulateDelay(200)
-
-        const fileTree: FileTree = {
-            ...configFiles,
-            ...componentFiles,
-            ...utilityFiles,
-            ...docFiles,
-        }
-
-        // Create output
-        const output: GeneratedOutput = {
-            status: 'success',
-            siteName: parsedIntent.siteName,
-            templateUsed: detectTemplate(parsedIntent),
-            parsedIntent,
-            fileTree,
-            commands: {
-                dev: 'npm install && npm run dev',
-                build: 'npm run build',
-                exportZip: 'node scripts/export-zip.js',
-            },
-            downloadUrl: null,
-            deploymentHints: `To deploy your site:\n1. Push to GitHub\n2. Connect to Vercel/Netlify\n3. Set environment variables if using APIs\n4. Deploy!`,
-            qaChecklist: [
-                'Verify all sections render correctly',
-                'Test responsive design on mobile',
-                'Check color contrast for accessibility',
-                'Validate contact form functionality',
-                'Test dark mode toggle',
-                'Verify all links work',
-            ],
-            notes: generateNotes(parsedIntent),
-            generatedAt: new Date().toISOString(),
-        }
-
-        updateProgress(100, 'Complete!')
-        return output
-    } catch (error) {
-        throw new Error(`Generation failed: ${error instanceof Error ? error.message : 'Unknown error'}`)
+    // Create output
+    const output: GeneratedOutput = {
+      status: 'success',
+      siteName: parsedIntent.siteName,
+      templateUsed: detectTemplate(parsedIntent),
+      parsedIntent,
+      fileTree,
+      commands: {
+        dev: 'npm install && npm run dev',
+        build: 'npm run build',
+        exportZip: 'node scripts/export-zip.js',
+      },
+      downloadUrl: null,
+      deploymentHints: `To deploy your site:\n1. Push to GitHub\n2. Connect to Vercel/Netlify\n3. Set environment variables if using APIs\n4. Deploy!`,
+      qaChecklist: [
+        'Verify all sections render correctly',
+        'Test responsive design on mobile',
+        'Check color contrast for accessibility',
+        'Validate contact form functionality',
+        'Test dark mode toggle',
+        'Verify all links work',
+      ],
+      notes: generateNotes(parsedIntent),
+      generatedAt: new Date().toISOString(),
     }
+
+    updateProgress(100, 'Complete!')
+    return output
+  } catch (error) {
+    throw new Error(`Generation failed: ${error instanceof Error ? error.message : 'Unknown error'}`)
+  }
 }
 
 // Helper to simulate async work
@@ -109,47 +109,47 @@ const simulateDelay = (ms: number) => new Promise(resolve => setTimeout(resolve,
 
 // Detect template type from parsed intent
 function detectTemplate(intent: ParsedIntent): string {
-    if (intent.sections.includes('pricing') && intent.sections.includes('features')) {
-        return 'saas-landing'
-    }
-    if (intent.sections.includes('gallery')) {
-        return 'portfolio'
-    }
-    if (intent.theme === 'amazon') {
-        return 'ecommerce'
-    }
-    return 'landing-page'
+  if (intent.sections.includes('pricing') && intent.sections.includes('features')) {
+    return 'saas-landing'
+  }
+  if (intent.sections.includes('gallery')) {
+    return 'portfolio'
+  }
+  if (intent.theme === 'amazon') {
+    return 'ecommerce'
+  }
+  return 'landing-page'
 }
 
 // Generate notes about the generation
 function generateNotes(intent: ParsedIntent): string {
-    const notes: string[] = []
+  const notes: string[] = []
 
-    // Check for API dependencies
-    if (intent.sections.includes('contact')) {
-        notes.push('Contact form uses Formspree. Add VITE_FORMSPREE_FORM_ID to .env.local for email delivery, otherwise submissions are logged to console.')
-    }
+  // Check for API dependencies
+  if (intent.sections.includes('contact')) {
+    notes.push('Contact form uses Formspree. Add VITE_FORMSPREE_FORM_ID to .env.local for email delivery, otherwise submissions are logged to console.')
+  }
 
-    // Image API notes
-    notes.push('Images use placeholder gradients by default. Add VITE_UNSPLASH_ACCESS_KEY for real images from Unsplash.')
+  // Image API notes
+  notes.push('Images use placeholder gradients by default. Add VITE_UNSPLASH_ACCESS_KEY for real images from Unsplash.')
 
-    return notes.join(' ')
+  return notes.join(' ')
 }
 
 // Generate configuration files
 function generateConfigFiles(intent: ParsedIntent): FileTree {
-    return {
-        'package.json': generatePackageJson(intent),
-        'vite.config.ts': generateViteConfig(),
-        'tailwind.config.js': generateTailwindConfig(intent),
-        'postcss.config.js': `// Purpose: PostCSS configuration
+  return {
+    'package.json': generatePackageJson(intent),
+    'vite.config.ts': generateViteConfig(),
+    'tailwind.config.js': generateTailwindConfig(intent),
+    'postcss.config.js': `// Purpose: PostCSS configuration
 export default {
   plugins: {
     tailwindcss: {},
     autoprefixer: {},
   },
 }`,
-        'tsconfig.json': `{
+    'tsconfig.json': `{
   "compilerOptions": {
     "target": "ES2020",
     "useDefineForClassFields": true,
@@ -174,7 +174,7 @@ export default {
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }`,
-        'tsconfig.node.json': `{
+    'tsconfig.node.json': `{
   "compilerOptions": {
     "composite": true,
     "skipLibCheck": true,
@@ -184,7 +184,7 @@ export default {
   },
   "include": ["vite.config.ts"]
 }`,
-        '.env.example': `# Purpose: Environment variables template
+    '.env.example': `# Purpose: Environment variables template
 
 # Image APIs (Optional)
 VITE_UNSPLASH_ACCESS_KEY=
@@ -196,7 +196,7 @@ VITE_FORMSPREE_FORM_ID=
 # AI APIs (Optional - premium)
 VITE_HUGGINGFACE_API_KEY=
 `,
-        '.gitignore': `# Dependencies
+    '.gitignore': `# Dependencies
 node_modules
 .pnp
 .pnp.js
@@ -224,55 +224,55 @@ npm-debug.log*
 .DS_Store
 Thumbs.db
 `,
-        'index.html': generateIndexHtml(intent),
-        'src/main.tsx': generateMainTsx(),
-        'src/index.css': generateIndexCss(intent),
-        'src/App.tsx': generateAppTsx(intent),
-    }
+    'index.html': generateIndexHtml(intent),
+    'src/main.tsx': generateMainTsx(),
+    'src/index.css': generateIndexCss(intent),
+    'src/App.tsx': generateAppTsx(intent),
+  }
 }
 
 // Generate component files
 function generateComponentFiles(intent: ParsedIntent): FileTree {
-    const files: FileTree = {}
+  const files: FileTree = {}
 
-    // Always generate Nav
-    files['src/components/Nav.tsx'] = generateNavComponent(intent)
+  // Always generate Nav
+  files['src/components/Nav.tsx'] = generateNavComponent(intent)
 
-    // Generate sections based on parsed intent
-    if (intent.sections.includes('hero')) {
-        files['src/components/Hero.tsx'] = generateHeroComponent(intent)
-    }
+  // Generate sections based on parsed intent
+  if (intent.sections.includes('hero')) {
+    files['src/components/Hero.tsx'] = generateHeroComponent(intent)
+  }
 
-    if (intent.sections.includes('features') && intent.features) {
-        files['src/components/Features.tsx'] = generateFeaturesComponent(intent)
-    }
+  if (intent.sections.includes('features') && intent.features) {
+    files['src/components/Features.tsx'] = generateFeaturesComponent(intent)
+  }
 
-    if (intent.sections.includes('pricing') && intent.pricingTiers) {
-        files['src/components/Pricing.tsx'] = generatePricingComponent(intent)
-    }
+  if (intent.sections.includes('pricing') && intent.pricingTiers) {
+    files['src/components/Pricing.tsx'] = generatePricingComponent(intent)
+  }
 
-    if (intent.sections.includes('contact')) {
-        files['src/components/Contact.tsx'] = generateContactComponent(intent)
-    }
+  if (intent.sections.includes('contact')) {
+    files['src/components/Contact.tsx'] = generateContactComponent(intent)
+  }
 
-    if (intent.sections.includes('cta')) {
-        files['src/components/CTA.tsx'] = generateCTAComponent(intent)
-    }
+  if (intent.sections.includes('cta')) {
+    files['src/components/CTA.tsx'] = generateCTAComponent(intent)
+  }
 
-    // Always generate Footer
-    files['src/components/Footer.tsx'] = generateFooterComponent(intent)
+  // Always generate Footer
+  files['src/components/Footer.tsx'] = generateFooterComponent(intent)
 
-    return files
+  return files
 }
 
 // Generate utility files
-function generateUtilityFiles(intent: ParsedIntent): FileTree {
-    return {
-        'src/utils/cn.ts': `// Purpose: Classname utility for conditional styling
+function generateUtilityFiles(_intent: ParsedIntent): FileTree {
+  return {
+    'src/utils/cn.ts': `// Purpose: Classname utility for conditional styling
 export function cn(...classes: (string | boolean | undefined | null)[]): string {
   return classes.filter(Boolean).join(' ')
 }`,
-        'src/utils/images.ts': `// Purpose: Image utilities with Unsplash/Pexels fallback to gradients
+    'src/utils/images.ts': `// Purpose: Image utilities with Unsplash/Pexels fallback to gradients
 const UNSPLASH_KEY = import.meta.env.VITE_UNSPLASH_ACCESS_KEY
 
 export interface ImageResult {
@@ -326,7 +326,7 @@ export function getGradientBg(seed: string): string {
   const hue2 = (hue1 + 40) % 360
   return \`linear-gradient(135deg, hsl(\${hue1}, 70%, 50%), hsl(\${hue2}, 70%, 40%))\`
 }`,
-        'src/hooks/useTheme.ts': `// Purpose: Theme hook for dark/light mode toggle
+    'src/hooks/useTheme.ts': `// Purpose: Theme hook for dark/light mode toggle
 import { useState, useEffect } from 'react'
 
 export function useTheme() {
@@ -354,12 +354,12 @@ export function useTheme() {
 
   return { isDark, toggle }
 }`,
-    }
+  }
 }
 
 // Generate documentation files
 function generateDocFiles(intent: ParsedIntent): FileTree {
-    const readmeContent = `# ${intent.siteName}
+  const readmeContent = `# ${intent.siteName}
 
 > Generated by ProbFixora - AI Website Generator
 
@@ -434,9 +434,9 @@ MIT License - feel free to use this for any project!
 Made with ❤️ by [ProbFixora](https://probfixora.dev)
 `
 
-    return {
-        'README.md': readmeContent,
-        'LICENSE': `MIT License
+  return {
+    'README.md': readmeContent,
+    'LICENSE': `MIT License
 
 Copyright (c) ${new Date().getFullYear()} ${intent.siteName}
 
@@ -458,7 +458,7 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 `,
-        'CODE_OF_CONDUCT.md': `# Code of Conduct
+    'CODE_OF_CONDUCT.md': `# Code of Conduct
 
 ## Our Pledge
 
@@ -477,7 +477,7 @@ Examples of behavior that contributes to creating a positive environment include
 Instances of abusive, harassing, or otherwise unacceptable behavior may be reported.
 All complaints will be reviewed and investigated.
 `,
-        '.github/workflows/ci.yml': `# Purpose: GitHub Actions CI workflow
+    '.github/workflows/ci.yml': `# Purpose: GitHub Actions CI workflow
 name: CI
 
 on:
@@ -511,7 +511,7 @@ jobs:
       - name: Test
         run: npm run test --if-present
 `,
-        'scripts/export-zip.js': `// Purpose: Export project as ZIP file
+    'scripts/export-zip.js': `// Purpose: Export project as ZIP file
 const fs = require('fs');
 const path = require('path');
 const archiver = require('archiver');
@@ -540,5 +540,5 @@ archive.glob('**/*', {
 
 archive.finalize();
 `,
-    }
+  }
 }

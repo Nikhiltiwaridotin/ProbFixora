@@ -139,7 +139,7 @@ export async function generateTagline(
  */
 export async function generateFeatureDescription(
     featureTitle: string,
-    siteName: string,
+    _siteName: string,
     industry: string
 ): Promise<string> {
     const prompt = `Write a one-sentence description for a ${industry} product feature called "${featureTitle}". Keep it under 20 words.`
@@ -173,7 +173,7 @@ export async function generateFeatureDescription(
  * Generate CTA text based on context
  */
 export async function generateCTAText(
-    siteName: string,
+    _siteName: string,
     tone: string,
     isPrimary: boolean
 ): Promise<string> {

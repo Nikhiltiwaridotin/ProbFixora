@@ -59,17 +59,24 @@ const extractSections = (prompt: string): SectionType[] => {
     const sectionKeywords: Record<SectionType, string[]> = {
         nav: ['nav', 'navigation', 'header', 'menu'],
         hero: ['hero', 'banner', 'landing', 'headline', 'main section'],
-        features: ['feature', 'features', 'benefits', 'services', 'offerings'],
+        features: ['feature', 'features', 'benefits', 'offerings'],
         pricing: ['pricing', 'price', 'plans', 'tiers', 'subscription'],
-        gallery: ['gallery', 'portfolio', 'projects', 'showcase', 'work', 'products'],
+        gallery: ['gallery', 'showcase', 'work'],
         testimonials: ['testimonial', 'testimonials', 'reviews', 'feedback', 'clients'],
         contact: ['contact', 'contact form', 'get in touch', 'reach out', 'email'],
         about: ['about', 'about us', 'who we are', 'story', 'mission'],
-        cta: ['cta', 'call to action', 'signup', 'get started', 'newsletter'],
+        cta: ['cta', 'call to action', 'signup', 'get started', 'newsletter signup'],
         faq: ['faq', 'faqs', 'questions', 'frequently asked'],
         team: ['team', 'members', 'people', 'staff', 'employees'],
         stats: ['stats', 'statistics', 'numbers', 'metrics', 'achievements'],
         footer: ['footer', 'bottom'],
+        products: ['products', 'product', 'shop', 'store'],
+        articles: ['articles', 'article', 'blog', 'posts', 'news'],
+        newsletter: ['newsletter', 'subscribe', 'email list'],
+        services: ['services', 'service', 'what we do'],
+        categories: ['categories', 'category', 'types'],
+        deals: ['deals', 'discounts', 'offers', 'promotions'],
+        portfolio: ['portfolio', 'projects', 'case studies'],
     }
 
     const foundSections: SectionType[] = []

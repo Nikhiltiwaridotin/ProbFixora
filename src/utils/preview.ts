@@ -5,32 +5,32 @@ import { GeneratedOutput } from '../types'
  * Generate a complete HTML page for the live preview
  */
 export function generatePreviewHTML(output: GeneratedOutput): string {
-    const { parsedIntent } = output
-    const isDark = parsedIntent.theme === 'dark' || parsedIntent.theme === 'amazon'
+  const { parsedIntent } = output
+  const isDark = parsedIntent.theme === 'dark' || parsedIntent.theme === 'amazon'
 
-    // Generate inline styles
-    const styles = generatePreviewStyles(parsedIntent.primaryColor, isDark)
+  // Generate inline styles
+  const styles = generatePreviewStyles(parsedIntent.primaryColor, isDark)
 
-    // Generate component HTML
-    const navHTML = generateNavPreview(parsedIntent.siteName, isDark)
-    const heroHTML = parsedIntent.sections.includes('hero')
-        ? generateHeroPreview(parsedIntent.siteName, parsedIntent.cta?.primary || 'Get Started', isDark)
-        : ''
-    const featuresHTML = parsedIntent.sections.includes('features') && parsedIntent.features
-        ? generateFeaturesPreview(parsedIntent.features, isDark)
-        : ''
-    const pricingHTML = parsedIntent.sections.includes('pricing') && parsedIntent.pricingTiers
-        ? generatePricingPreview(parsedIntent.pricingTiers, isDark)
-        : ''
-    const ctaHTML = parsedIntent.sections.includes('cta')
-        ? generateCTAPreview(parsedIntent.cta?.primary || 'Get Started', isDark)
-        : ''
-    const contactHTML = parsedIntent.sections.includes('contact')
-        ? generateContactPreview(isDark)
-        : ''
-    const footerHTML = generateFooterPreview(parsedIntent.siteName, isDark)
+  // Generate component HTML
+  const navHTML = generateNavPreview(parsedIntent.siteName, isDark)
+  const heroHTML = parsedIntent.sections.includes('hero')
+    ? generateHeroPreview(parsedIntent.siteName, parsedIntent.cta?.primary || 'Get Started', isDark)
+    : ''
+  const featuresHTML = parsedIntent.sections.includes('features') && parsedIntent.features
+    ? generateFeaturesPreview(parsedIntent.features, isDark)
+    : ''
+  const pricingHTML = parsedIntent.sections.includes('pricing') && parsedIntent.pricingTiers
+    ? generatePricingPreview(parsedIntent.pricingTiers, isDark)
+    : ''
+  const ctaHTML = parsedIntent.sections.includes('cta')
+    ? generateCTAPreview(parsedIntent.cta?.primary || 'Get Started', isDark)
+    : ''
+  const contactHTML = parsedIntent.sections.includes('contact')
+    ? generateContactPreview(isDark)
+    : ''
+  const footerHTML = generateFooterPreview(parsedIntent.siteName, isDark)
 
-    return `<!DOCTYPE html>
+  return `<!DOCTYPE html>
 <html lang="en" class="${isDark ? 'dark' : ''}">
 <head>
   <meta charset="UTF-8">
@@ -52,7 +52,7 @@ export function generatePreviewHTML(output: GeneratedOutput): string {
 }
 
 function generatePreviewStyles(primaryColor: string, isDark: boolean): string {
-    return `
+  return `
     * {
       margin: 0;
       padding: 0;
@@ -163,8 +163,8 @@ function generatePreviewStyles(primaryColor: string, isDark: boolean): string {
       padding: 8rem 0 4rem;
       text-align: center;
       background: ${isDark
-            ? 'linear-gradient(to bottom, #111827, #1f2937)'
-            : 'linear-gradient(to bottom, #f9fafb, #ffffff)'};
+      ? 'linear-gradient(to bottom, #111827, #1f2937)'
+      : 'linear-gradient(to bottom, #f9fafb, #ffffff)'};
     }
     
     .hero h1 {
@@ -431,8 +431,8 @@ function generatePreviewStyles(primaryColor: string, isDark: boolean): string {
   `
 }
 
-function generateNavPreview(siteName: string, isDark: boolean): string {
-    return `
+function generateNavPreview(siteName: string, _isDark: boolean): string {
+  return `
     <nav class="nav">
       <div class="container nav-content">
         <a href="#" class="nav-logo">
@@ -451,8 +451,8 @@ function generateNavPreview(siteName: string, isDark: boolean): string {
   `
 }
 
-function generateHeroPreview(siteName: string, cta: string, isDark: boolean): string {
-    return `
+function generateHeroPreview(siteName: string, cta: string, _isDark: boolean): string {
+  return `
     <section class="hero">
       <div class="container">
         <h1>${siteName}<br><span>The Future Starts Here</span></h1>
@@ -466,8 +466,8 @@ function generateHeroPreview(siteName: string, cta: string, isDark: boolean): st
   `
 }
 
-function generateFeaturesPreview(features: { title: string; description: string }[], isDark: boolean): string {
-    const featureCards = features.map(f => `
+function generateFeaturesPreview(features: { title: string; description: string }[], _isDark: boolean): string {
+  const featureCards = features.map(f => `
     <div class="feature-card">
       <div class="feature-icon">⚡</div>
       <h3>${f.title}</h3>
@@ -475,7 +475,7 @@ function generateFeaturesPreview(features: { title: string; description: string 
     </div>
   `).join('')
 
-    return `
+  return `
     <section class="features">
       <div class="container">
         <div class="section-header">
@@ -490,8 +490,8 @@ function generateFeaturesPreview(features: { title: string; description: string 
   `
 }
 
-function generatePricingPreview(tiers: { name: string; price: number; period: string; features: string[]; highlighted?: boolean }[], isDark: boolean): string {
-    const pricingCards = tiers.map(tier => `
+function generatePricingPreview(tiers: { name: string; price: number; period: string; features: string[]; highlighted?: boolean }[], _isDark: boolean): string {
+  const pricingCards = tiers.map(tier => `
     <div class="pricing-card ${tier.highlighted ? 'highlighted' : ''}">
       ${tier.highlighted ? '<div class="pricing-badge">Most Popular</div>' : ''}
       <h3>${tier.name}</h3>
@@ -503,7 +503,7 @@ function generatePricingPreview(tiers: { name: string; price: number; period: st
     </div>
   `).join('')
 
-    return `
+  return `
     <section class="pricing">
       <div class="container">
         <div class="section-header">
@@ -518,8 +518,8 @@ function generatePricingPreview(tiers: { name: string; price: number; period: st
   `
 }
 
-function generateCTAPreview(cta: string, isDark: boolean): string {
-    return `
+function generateCTAPreview(cta: string, _isDark: boolean): string {
+  return `
     <section class="cta">
       <div class="container">
         <h2>Ready to get started?</h2>
@@ -530,8 +530,8 @@ function generateCTAPreview(cta: string, isDark: boolean): string {
   `
 }
 
-function generateContactPreview(isDark: boolean): string {
-    return `
+function generateContactPreview(_isDark: boolean): string {
+  return `
     <section class="contact">
       <div class="container">
         <div class="section-header">
@@ -566,9 +566,9 @@ function generateContactPreview(isDark: boolean): string {
   `
 }
 
-function generateFooterPreview(siteName: string, isDark: boolean): string {
-    const year = new Date().getFullYear()
-    return `
+function generateFooterPreview(siteName: string, _isDark: boolean): string {
+  const year = new Date().getFullYear()
+  return `
     <footer class="footer">
       <div class="container">
         <p>© ${year} ${siteName}. All rights reserved.</p>

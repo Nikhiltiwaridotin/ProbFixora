@@ -37,7 +37,14 @@ export type SectionType =
     | 'team'
     | 'stats'
     | 'footer'
-    | 'nav';
+    | 'nav'
+    | 'products'
+    | 'articles'
+    | 'newsletter'
+    | 'services'
+    | 'categories'
+    | 'deals'
+    | 'portfolio';
 
 export interface FeatureItem {
     id: string;

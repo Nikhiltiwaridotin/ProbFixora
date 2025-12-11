@@ -2,9 +2,9 @@
 import { ParsedIntent } from '../../types'
 
 export function generatePackageJson(intent: ParsedIntent): string {
-    const projectName = intent.siteName.toLowerCase().replace(/\s+/g, '-')
+  const projectName = intent.siteName.toLowerCase().replace(/\s+/g, '-')
 
-    return `{
+  return `{
   "name": "${projectName}",
   "private": true,
   "version": "1.0.0",
@@ -37,7 +37,7 @@ export function generatePackageJson(intent: ParsedIntent): string {
 }
 
 export function generateViteConfig(): string {
-    return `// Purpose: Vite configuration
+  return `// Purpose: Vite configuration
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
@@ -57,9 +57,7 @@ export default defineConfig({
 }
 
 export function generateTailwindConfig(intent: ParsedIntent): string {
-    const isDark = intent.theme === 'dark' || intent.theme === 'amazon'
-
-    return `// Purpose: Tailwind CSS configuration with custom theme
+  return `// Purpose: Tailwind CSS configuration with custom theme
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
@@ -112,22 +110,22 @@ export default {
 
 // Helper to adjust color brightness
 function adjustColor(hex: string, amount: number): string {
-    const cleanHex = hex.replace('#', '')
-    const num = parseInt(cleanHex, 16)
+  const cleanHex = hex.replace('#', '')
+  const num = parseInt(cleanHex, 16)
 
-    let r = (num >> 16) + Math.round(255 * amount)
-    let g = ((num >> 8) & 0x00FF) + Math.round(255 * amount)
-    let b = (num & 0x0000FF) + Math.round(255 * amount)
+  let r = (num >> 16) + Math.round(255 * amount)
+  let g = ((num >> 8) & 0x00FF) + Math.round(255 * amount)
+  let b = (num & 0x0000FF) + Math.round(255 * amount)
 
-    r = Math.min(255, Math.max(0, r))
-    g = Math.min(255, Math.max(0, g))
-    b = Math.min(255, Math.max(0, b))
+  r = Math.min(255, Math.max(0, r))
+  g = Math.min(255, Math.max(0, g))
+  b = Math.min(255, Math.max(0, b))
 
-    return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, '0')}`
+  return `#${((r << 16) | (g << 8) | b).toString(16).padStart(6, '0')}`
 }
 
 export function generateMainTsx(): string {
-    return `// Purpose: React application entry point
+  return `// Purpose: React application entry point
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
@@ -141,9 +139,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 }
 
 export function generateIndexCss(intent: ParsedIntent): string {
-    const isDark = intent.theme === 'dark' || intent.theme === 'amazon'
+  const isDark = intent.theme === 'dark' || intent.theme === 'amazon'
 
-    return `/* Purpose: Global styles and Tailwind imports */
+  return `/* Purpose: Global styles and Tailwind imports */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -207,46 +205,46 @@ export function generateIndexCss(intent: ParsedIntent): string {
 }
 
 export function generateAppTsx(intent: ParsedIntent): string {
-    const imports: string[] = []
-    const components: string[] = []
+  const imports: string[] = []
+  const components: string[] = []
 
-    // Always include Nav
-    imports.push("import Nav from './components/Nav'")
-    components.push('      <Nav />')
+  // Always include Nav
+  imports.push("import Nav from './components/Nav'")
+  components.push('      <Nav />')
 
-    // Add sections based on parsed intent
-    if (intent.sections.includes('hero')) {
-        imports.push("import Hero from './components/Hero'")
-        components.push('      <Hero />')
-    }
+  // Add sections based on parsed intent
+  if (intent.sections.includes('hero')) {
+    imports.push("import Hero from './components/Hero'")
+    components.push('      <Hero />')
+  }
 
-    if (intent.sections.includes('features')) {
-        imports.push("import Features from './components/Features'")
-        components.push('      <Features />')
-    }
+  if (intent.sections.includes('features')) {
+    imports.push("import Features from './components/Features'")
+    components.push('      <Features />')
+  }
 
-    if (intent.sections.includes('pricing')) {
-        imports.push("import Pricing from './components/Pricing'")
-        components.push('      <Pricing />')
-    }
+  if (intent.sections.includes('pricing')) {
+    imports.push("import Pricing from './components/Pricing'")
+    components.push('      <Pricing />')
+  }
 
-    if (intent.sections.includes('cta')) {
-        imports.push("import CTA from './components/CTA'")
-        components.push('      <CTA />')
-    }
+  if (intent.sections.includes('cta')) {
+    imports.push("import CTA from './components/CTA'")
+    components.push('      <CTA />')
+  }
 
-    if (intent.sections.includes('contact')) {
-        imports.push("import Contact from './components/Contact'")
-        components.push('      <Contact />')
-    }
+  if (intent.sections.includes('contact')) {
+    imports.push("import Contact from './components/Contact'")
+    components.push('      <Contact />')
+  }
 
-    // Always include Footer
-    imports.push("import Footer from './components/Footer'")
-    components.push('      <Footer />')
+  // Always include Footer
+  imports.push("import Footer from './components/Footer'")
+  components.push('      <Footer />')
 
-    const isDark = intent.theme === 'dark' || intent.theme === 'amazon'
+  const isDark = intent.theme === 'dark' || intent.theme === 'amazon'
 
-    return `// Purpose: Main application component
+  return `// Purpose: Main application component
 import { useState, useEffect } from 'react'
 ${imports.join('\n')}
 
@@ -272,10 +270,10 @@ export default App`
 }
 
 export function generateIndexHtml(intent: ParsedIntent): string {
-    const title = intent.siteName
-    const description = `${intent.siteName} - ${intent.tone} ${intent.industry || 'website'}`
+  const title = intent.siteName
+  const description = `${intent.siteName} - ${intent.tone} ${intent.industry || 'website'}`
 
-    return `<!DOCTYPE html>
+  return `<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
