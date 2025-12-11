@@ -60,10 +60,17 @@ export default function PromptInput({
     const handleEnhancePrompt = async () => {
         if (!value.trim() || isEnhancing || isGenerating) return
 
+        if (!isOpenAIAvailable()) {
+            alert('OpenAI API key not configured. Please add VITE_OPENAI_API_KEY in environment variables.')
+            return
+        }
+
         setIsEnhancing(true)
         const result = await enhancePrompt(value)
         if (result.success) {
             onChange(result.enhancedPrompt)
+        } else {
+            alert('Failed to enhance prompt: ' + (result.error || 'Unknown error'))
         }
         setIsEnhancing(false)
     }
@@ -116,10 +123,11 @@ export default function PromptInput({
                                 {value.length} characters
                             </div>
 
+
                             {/* Buttons */}
                             <div className="flex items-center gap-2">
-                                {/* Enhance Prompt Button */}
-                                {isOpenAIAvailable() && value.trim() && !isGenerating && (
+                                {/* Enhance Prompt Button - Always show */}
+                                {value.trim() && !isGenerating && (
                                     <button
                                         type="button"
                                         onClick={handleEnhancePrompt}
