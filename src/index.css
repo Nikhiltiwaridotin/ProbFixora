@@ -1,0 +1,257 @@
+/* Purpose: Global styles and Tailwind imports for ProbFixora */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base Styles */
+@layer base {
+  :root {
+    --color-primary: #0B74DE;
+    --color-primary-dark: #074685;
+    --color-amazon-orange: #FF9900;
+    --color-amazon-dark: #131921;
+    --gradient-hero: linear-gradient(135deg, #0B74DE 0%, #074685 50%, #042F59 100%);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-white dark:bg-amazon-dark text-gray-900 dark:text-gray-100;
+    @apply font-sans antialiased;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-gray-100 dark:bg-gray-800;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gray-300 dark:bg-gray-600 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-400 dark:bg-gray-500;
+  }
+
+  /* Selection */
+  ::selection {
+    @apply bg-primary-500 text-white;
+  }
+}
+
+/* Component Styles */
+@layer components {
+  /* Button styles */
+  .btn {
+    @apply inline-flex items-center justify-center px-6 py-3 font-semibold rounded-xl
+           transition-all duration-300 ease-out transform
+           focus:outline-none focus:ring-2 focus:ring-offset-2
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-primary {
+    @apply btn bg-gradient-to-r from-primary-500 to-primary-600 text-white
+           hover:from-primary-600 hover:to-primary-700
+           focus:ring-primary-500 shadow-lg hover:shadow-xl
+           hover:-translate-y-0.5 active:translate-y-0;
+  }
+
+  .btn-amazon {
+    @apply btn bg-gradient-to-b from-amazon-orange to-[#e88c00] text-amazon-dark font-bold
+           border border-[#a88734] hover:from-[#f7a31c] hover:to-amazon-orange
+           shadow-amazon hover:shadow-amazon-hover;
+  }
+
+  .btn-secondary {
+    @apply btn bg-white dark:bg-gray-800 text-gray-900 dark:text-white
+           border-2 border-gray-200 dark:border-gray-600
+           hover:border-primary-500 hover:text-primary-500
+           focus:ring-gray-500;
+  }
+
+  .btn-ghost {
+    @apply btn text-gray-600 dark:text-gray-300
+           hover:bg-gray-100 dark:hover:bg-gray-800
+           focus:ring-gray-500;
+  }
+
+  /* Card styles */
+  .card {
+    @apply bg-white dark:bg-gray-800 rounded-2xl shadow-card
+           border border-gray-100 dark:border-gray-700
+           transition-all duration-300;
+  }
+
+  .card-hover {
+    @apply card hover:shadow-card-hover hover:-translate-y-1;
+  }
+
+  .card-glow {
+    @apply card hover:shadow-glow border-primary-200 dark:border-primary-800;
+  }
+
+  /* Input styles */
+  .input {
+    @apply w-full px-4 py-3 rounded-xl
+           bg-white dark:bg-gray-800
+           border-2 border-gray-200 dark:border-gray-600
+           text-gray-900 dark:text-white
+           placeholder-gray-400 dark:placeholder-gray-500
+           focus:outline-none focus:border-primary-500 focus:ring-4 focus:ring-primary-100
+           dark:focus:ring-primary-900
+           transition-all duration-200;
+  }
+
+  .textarea {
+    @apply input resize-none;
+  }
+
+  /* Section styles */
+  .section {
+    @apply py-16 md:py-24;
+  }
+
+  .container-custom {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Heading styles */
+  .heading-xl {
+    @apply text-4xl md:text-5xl lg:text-6xl font-display font-bold tracking-tight;
+  }
+
+  .heading-lg {
+    @apply text-3xl md:text-4xl font-display font-bold tracking-tight;
+  }
+
+  .heading-md {
+    @apply text-2xl md:text-3xl font-display font-semibold;
+  }
+
+  .heading-sm {
+    @apply text-xl md:text-2xl font-display font-semibold;
+  }
+
+  /* Badge styles */
+  .badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium;
+  }
+
+  .badge-primary {
+    @apply badge bg-primary-100 text-primary-700 dark:bg-primary-900 dark:text-primary-300;
+  }
+
+  .badge-success {
+    @apply badge bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300;
+  }
+
+  .badge-amazon {
+    @apply badge bg-amazon-orange/20 text-amazon-orange;
+  }
+
+  /* Glass effect */
+  .glass {
+    @apply bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl
+           border border-white/20 dark:border-gray-800/50;
+  }
+
+  /* Gradient text */
+  .gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary-500 via-primary-600 to-primary-700;
+  }
+
+  .gradient-text-amazon {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-amazon-orange to-[#f0c14b];
+  }
+
+  /* Code block */
+  .code-block {
+    @apply bg-gray-900 text-gray-100 rounded-xl p-4 overflow-x-auto
+           font-mono text-sm border border-gray-700;
+  }
+
+  /* Preview frame */
+  .preview-frame {
+    @apply bg-white rounded-lg shadow-xl border border-gray-200 overflow-hidden;
+  }
+}
+
+/* Utility Styles */
+@layer utilities {
+  /* Animation delays */
+  .animation-delay-100 { animation-delay: 100ms; }
+  .animation-delay-200 { animation-delay: 200ms; }
+  .animation-delay-300 { animation-delay: 300ms; }
+  .animation-delay-500 { animation-delay: 500ms; }
+
+  /* Shimmer effect */
+  .shimmer {
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.2) 50%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 2s linear infinite;
+  }
+
+  /* Glow effects */
+  .glow-blue {
+    box-shadow: 0 0 40px rgba(11, 116, 222, 0.3);
+  }
+
+  .glow-orange {
+    box-shadow: 0 0 40px rgba(255, 153, 0, 0.3);
+  }
+
+  /* Text gradient animation */
+  .animate-gradient {
+    background-size: 200% 200%;
+    animation: gradient 3s ease infinite;
+  }
+
+  @keyframes gradient {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  /* Hide scrollbar but keep functionality */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Prism.js code highlighting overrides */
+code[class*="language-"],
+pre[class*="language-"] {
+  @apply font-mono text-sm;
+}
+
+/* Animations for page transitions */
+@keyframes pageEnter {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.page-enter {
+  animation: pageEnter 0.5s ease-out forwards;
+}
