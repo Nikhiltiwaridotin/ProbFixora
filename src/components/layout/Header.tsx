@@ -99,7 +99,7 @@ export default function Header({ isDarkMode, onToggleTheme }: HeaderProps) {
 
                         {/* GitHub Link */}
                         <a
-                            href="https://github.com/probfixora"
+                            href="https://github.com/Nikhiltiwaridotin/ProbFixora"
                             target="_blank"
                             rel="noopener noreferrer"
                             className="hidden sm:flex p-2 rounded-lg text-geist-500 dark:text-geist-400 
