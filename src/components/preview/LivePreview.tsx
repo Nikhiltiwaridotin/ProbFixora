@@ -1,4 +1,4 @@
-// Purpose: Live preview component that renders generated website in an iframe
+// Purpose: Vercel-inspired Live Preview component
 import { useState, useMemo } from 'react'
 import {
     XMarkIcon,
@@ -36,97 +36,111 @@ export default function LivePreview({ output, onClose }: LivePreviewProps) {
 
     return (
         <div className={`
-      ${isFullscreen
-                ? 'fixed inset-0 z-50 bg-white dark:bg-gray-900 p-4'
+            ${isFullscreen
+                ? 'fixed inset-0 z-50 bg-geist-50 dark:bg-geist-950 p-4'
                 : 'card overflow-hidden'
             }
-    `}>
+        `}>
             {/* Preview Header */}
-            <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+            <div className="flex items-center justify-between p-3 
+                            border-b border-geist-200 dark:border-geist-800">
                 <div className="flex items-center gap-2">
-                    <h4 className="font-semibold text-gray-900 dark:text-white">
-                        Live Preview
+                    <h4 className="font-medium text-geist-900 dark:text-white text-sm">
+                        Preview
                     </h4>
-                    <span className="badge-primary">
+                    <span className="badge-default text-xs">
                         {currentViewport.label}
                     </span>
                 </div>
 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-1">
                     {/* Viewport Toggles */}
-                    <div className="flex items-center p-1 rounded-lg bg-gray-100 dark:bg-gray-800">
+                    <div className="flex items-center p-0.5 rounded-lg 
+                                    bg-geist-100 dark:bg-geist-800">
                         <button
                             onClick={() => setViewport('desktop')}
-                            className={`p-2 rounded-md transition-colors ${viewport === 'desktop'
-                                    ? 'bg-white dark:bg-gray-700 shadow-sm'
-                                    : 'hover:bg-gray-200 dark:hover:bg-gray-700'
+                            className={`p-1.5 rounded-md transition-colors ${viewport === 'desktop'
+                                    ? 'bg-white dark:bg-geist-700 shadow-sm'
+                                    : 'hover:text-geist-900 dark:hover:text-white'
                                 }`}
-                            title="Desktop view"
+                            title="Desktop"
                         >
-                            <ComputerDesktopIcon className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+                            <ComputerDesktopIcon className="w-4 h-4 text-geist-500" />
                         </button>
                         <button
                             onClick={() => setViewport('tablet')}
-                            className={`p-2 rounded-md transition-colors ${viewport === 'tablet'
-                                    ? 'bg-white dark:bg-gray-700 shadow-sm'
-                                    : 'hover:bg-gray-200 dark:hover:bg-gray-700'
+                            className={`p-1.5 rounded-md transition-colors ${viewport === 'tablet'
+                                    ? 'bg-white dark:bg-geist-700 shadow-sm'
+                                    : 'hover:text-geist-900 dark:hover:text-white'
                                 }`}
-                            title="Tablet view"
+                            title="Tablet"
                         >
-                            <DeviceTabletIcon className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+                            <DeviceTabletIcon className="w-4 h-4 text-geist-500" />
                         </button>
                         <button
                             onClick={() => setViewport('mobile')}
-                            className={`p-2 rounded-md transition-colors ${viewport === 'mobile'
-                                    ? 'bg-white dark:bg-gray-700 shadow-sm'
-                                    : 'hover:bg-gray-200 dark:hover:bg-gray-700'
+                            className={`p-1.5 rounded-md transition-colors ${viewport === 'mobile'
+                                    ? 'bg-white dark:bg-geist-700 shadow-sm'
+                                    : 'hover:text-geist-900 dark:hover:text-white'
                                 }`}
-                            title="Mobile view"
+                            title="Mobile"
                         >
-                            <DevicePhoneMobileIcon className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+                            <DevicePhoneMobileIcon className="w-4 h-4 text-geist-500" />
                         </button>
                     </div>
+
+                    <div className="w-px h-5 bg-geist-200 dark:bg-geist-700 mx-1" />
 
                     {/* Fullscreen Toggle */}
                     <button
                         onClick={() => setIsFullscreen(!isFullscreen)}
-                        className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                        className="p-1.5 rounded-lg hover:bg-geist-100 dark:hover:bg-geist-800 
+                                   transition-colors"
                         title={isFullscreen ? 'Exit fullscreen' : 'Fullscreen'}
                     >
-                        <ArrowsPointingOutIcon className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+                        <ArrowsPointingOutIcon className="w-4 h-4 text-geist-500" />
                     </button>
 
                     {/* Close Button */}
                     <button
                         onClick={onClose}
-                        className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                        title="Close preview"
+                        className="p-1.5 rounded-lg hover:bg-geist-100 dark:hover:bg-geist-800 
+                                   transition-colors"
+                        title="Close"
                     >
-                        <XMarkIcon className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+                        <XMarkIcon className="w-4 h-4 text-geist-500" />
                     </button>
                 </div>
             </div>
 
             {/* Preview Content */}
-            <div className="bg-gray-100 dark:bg-gray-800 p-4 overflow-auto" style={{
-                height: isFullscreen ? 'calc(100vh - 80px)' : '500px'
+            <div className="bg-geist-100 dark:bg-geist-900 p-4 overflow-auto" style={{
+                height: isFullscreen ? 'calc(100vh - 120px)' : '420px'
             }}>
                 <div
-                    className="mx-auto bg-white rounded-lg shadow-xl overflow-hidden transition-all duration-300"
+                    className="mx-auto bg-white dark:bg-geist-950 rounded-lg 
+                               shadow-vercel-lg dark:shadow-none 
+                               border border-geist-200 dark:border-geist-800
+                               overflow-hidden transition-all duration-300"
                     style={{
                         width: currentViewport.width,
                         maxWidth: '100%',
                     }}
                 >
                     {/* Browser Chrome */}
-                    <div className="flex items-center gap-2 px-4 py-3 bg-gray-100 dark:bg-gray-700 border-b border-gray-200 dark:border-gray-600">
+                    <div className="flex items-center gap-2 px-3 py-2.5 
+                                    bg-geist-50 dark:bg-geist-900 
+                                    border-b border-geist-200 dark:border-geist-800">
                         <div className="flex gap-1.5">
-                            <div className="w-3 h-3 rounded-full bg-red-500" />
-                            <div className="w-3 h-3 rounded-full bg-yellow-500" />
-                            <div className="w-3 h-3 rounded-full bg-green-500" />
+                            <div className="w-2.5 h-2.5 rounded-full bg-geist-300 dark:bg-geist-700" />
+                            <div className="w-2.5 h-2.5 rounded-full bg-geist-300 dark:bg-geist-700" />
+                            <div className="w-2.5 h-2.5 rounded-full bg-geist-300 dark:bg-geist-700" />
                         </div>
                         <div className="flex-1 mx-4">
-                            <div className="max-w-xs mx-auto px-3 py-1 rounded bg-white dark:bg-gray-600 text-xs text-gray-500 dark:text-gray-300 text-center truncate">
+                            <div className="max-w-[200px] mx-auto px-3 py-1 rounded-md 
+                                            bg-white dark:bg-geist-800 
+                                            border border-geist-200 dark:border-geist-700
+                                            text-[10px] text-geist-400 text-center truncate font-mono">
                                 {output.siteName.toLowerCase().replace(/\s+/g, '-')}.vercel.app
                             </div>
                         </div>
@@ -137,7 +151,7 @@ export default function LivePreview({ output, onClose }: LivePreviewProps) {
                         srcDoc={previewHTML}
                         className="w-full border-0"
                         style={{
-                            height: isFullscreen ? 'calc(100vh - 160px)' : '450px'
+                            height: isFullscreen ? 'calc(100vh - 200px)' : '360px'
                         }}
                         title={`${output.siteName} Preview`}
                         sandbox="allow-scripts allow-same-origin"
@@ -146,15 +160,12 @@ export default function LivePreview({ output, onClose }: LivePreviewProps) {
             </div>
 
             {/* Preview Footer */}
-            <div className="flex items-center justify-between p-3 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
-                <p className="text-xs text-gray-500 dark:text-gray-400">
-                    This is a simulated preview. Download and run the project for full functionality.
+            <div className="flex items-center justify-between p-2.5 
+                            border-t border-geist-200 dark:border-geist-800 
+                            bg-white dark:bg-geist-950">
+                <p className="text-xs text-geist-400">
+                    Simulated preview. Download for full functionality.
                 </p>
-                <div className="flex gap-2">
-                    <button className="text-xs text-primary-600 dark:text-primary-400 hover:underline">
-                        Open in new tab
-                    </button>
-                </div>
             </div>
         </div>
     )

@@ -1,11 +1,10 @@
-// Purpose: Component to display API configuration status and setup instructions
+// Purpose: Vercel-inspired API Status component
 import { useState } from 'react'
 import {
     CheckCircleIcon,
     XCircleIcon,
     ChevronDownIcon,
     ChevronUpIcon,
-    KeyIcon,
 } from '@heroicons/react/24/outline'
 
 interface APIStatusProps {
@@ -19,31 +18,27 @@ export default function APIStatus({ className = '' }: APIStatusProps) {
     const apis = {
         unsplash: {
             name: 'Unsplash',
-            description: 'High-quality free images',
+            description: 'Free images',
             configured: !!import.meta.env.VITE_UNSPLASH_ACCESS_KEY,
             url: 'https://unsplash.com/developers',
-            icon: '🖼️',
         },
         pexels: {
             name: 'Pexels',
-            description: 'Free stock photos',
+            description: 'Stock photos',
             configured: !!import.meta.env.VITE_PEXELS_API_KEY,
             url: 'https://www.pexels.com/api/',
-            icon: '📷',
         },
         huggingface: {
             name: 'Hugging Face',
-            description: 'AI content generation',
+            description: 'AI generation',
             configured: !!import.meta.env.VITE_HUGGINGFACE_API_KEY,
             url: 'https://huggingface.co/settings/tokens',
-            icon: '🤖',
         },
         formspree: {
             name: 'Formspree',
-            description: 'Contact form emails',
+            description: 'Form handling',
             configured: !!import.meta.env.VITE_FORMSPREE_FORM_ID,
             url: 'https://formspree.io/',
-            icon: '📧',
         },
     }
 
@@ -55,95 +50,77 @@ export default function APIStatus({ className = '' }: APIStatusProps) {
             {/* Header */}
             <button
                 onClick={() => setIsExpanded(!isExpanded)}
-                className="w-full flex items-center justify-between p-4 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors rounded-xl"
+                className="w-full flex items-center justify-between p-4 
+                           hover:bg-geist-50 dark:hover:bg-geist-800 
+                           transition-colors rounded-xl"
             >
                 <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-lg bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center">
-                        <KeyIcon className="w-5 h-5 text-primary-600 dark:text-primary-400" />
+                    <div className="w-9 h-9 rounded-lg bg-geist-100 dark:bg-geist-800 
+                                    flex items-center justify-center">
+                        <svg className="w-4 h-4 text-geist-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
+                        </svg>
                     </div>
                     <div className="text-left">
-                        <h3 className="font-semibold text-gray-900 dark:text-white">
+                        <h3 className="font-medium text-geist-900 dark:text-white text-sm">
                             API Configuration
                         </h3>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">
-                            {configuredCount}/{totalCount} APIs configured
+                        <p className="text-xs text-geist-500">
+                            {configuredCount}/{totalCount} configured
                         </p>
                     </div>
                 </div>
                 <div className="flex items-center gap-2">
                     {configuredCount === totalCount ? (
-                        <span className="badge-success">All Set!</span>
+                        <span className="badge-success text-xs">Ready</span>
                     ) : configuredCount > 0 ? (
-                        <span className="badge-primary">Partial</span>
+                        <span className="badge-primary text-xs">Partial</span>
                     ) : (
-                        <span className="px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400">
-                            Using Fallbacks
-                        </span>
+                        <span className="badge-default text-xs">Fallback</span>
                     )}
                     {isExpanded ? (
-                        <ChevronUpIcon className="w-5 h-5 text-gray-400" />
+                        <ChevronUpIcon className="w-4 h-4 text-geist-400" />
                     ) : (
-                        <ChevronDownIcon className="w-5 h-5 text-gray-400" />
+                        <ChevronDownIcon className="w-4 h-4 text-geist-400" />
                     )}
                 </div>
             </button>
 
             {/* Expanded Content */}
             {isExpanded && (
-                <div className="px-4 pb-4 space-y-3 animate-slide-down">
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                        Add API keys to <code className="px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-800">.env.local</code> for enhanced features.
-                        All APIs are <span className="font-semibold text-green-600 dark:text-green-400">free to use</span>!
+                <div className="px-4 pb-4 space-y-2 animate-fade-down">
+                    <p className="text-xs text-geist-500 mb-3">
+                        Add API keys to <code className="px-1.5 py-0.5 rounded bg-geist-100 dark:bg-geist-800 font-mono">.env.local</code> for enhanced features.
                     </p>
 
                     {Object.entries(apis).map(([key, api]) => (
                         <div
                             key={key}
-                            className="flex items-center justify-between p-3 rounded-lg bg-gray-50 dark:bg-gray-800"
+                            className="flex items-center justify-between p-3 rounded-lg 
+                                       bg-geist-50 dark:bg-geist-800"
                         >
-                            <div className="flex items-center gap-3">
-                                <span className="text-xl">{api.icon}</span>
-                                <div>
-                                    <div className="flex items-center gap-2">
-                                        <span className="font-medium text-gray-900 dark:text-white">
-                                            {api.name}
-                                        </span>
-                                        {api.configured ? (
-                                            <CheckCircleIcon className="w-4 h-4 text-green-500" />
-                                        ) : (
-                                            <XCircleIcon className="w-4 h-4 text-gray-400" />
-                                        )}
-                                    </div>
-                                    <span className="text-xs text-gray-500 dark:text-gray-400">
-                                        {api.description}
-                                    </span>
-                                </div>
+                            <div className="flex items-center gap-2">
+                                <span className="font-medium text-geist-900 dark:text-white text-sm">
+                                    {api.name}
+                                </span>
+                                {api.configured ? (
+                                    <CheckCircleIcon className="w-4 h-4 text-success" />
+                                ) : (
+                                    <XCircleIcon className="w-4 h-4 text-geist-300 dark:text-geist-600" />
+                                )}
                             </div>
                             {!api.configured && (
                                 <a
                                     href={api.url}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="text-xs font-medium text-primary-600 dark:text-primary-400 hover:underline"
+                                    className="text-xs font-medium text-accent-blue hover:underline"
                                 >
-                                    Get Free Key →
+                                    Get key →
                                 </a>
                             )}
                         </div>
                     ))}
-
-                    {/* Setup Instructions */}
-                    <div className="mt-4 p-3 rounded-lg bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-800">
-                        <h4 className="font-medium text-primary-800 dark:text-primary-200 mb-2">
-                            Quick Setup:
-                        </h4>
-                        <ol className="text-sm text-primary-700 dark:text-primary-300 space-y-1 list-decimal list-inside">
-                            <li>Copy <code>.env.example</code> to <code>.env.local</code></li>
-                            <li>Get free API keys from links above</li>
-                            <li>Paste keys in <code>.env.local</code></li>
-                            <li>Restart dev server (<code>npm run dev</code>)</li>
-                        </ol>
-                    </div>
                 </div>
             )}
         </div>

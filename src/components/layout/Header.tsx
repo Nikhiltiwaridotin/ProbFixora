@@ -1,4 +1,4 @@
-// Purpose: Main navigation header with branding and theme toggle
+// Purpose: Vercel-inspired header with Apple aesthetics
 import { useState } from 'react'
 import { Bars3Icon, XMarkIcon, SunIcon, MoonIcon } from '@heroicons/react/24/outline'
 
@@ -23,7 +23,7 @@ export default function Header({ isDarkMode, onToggleTheme }: HeaderProps) {
         const targetId = href.replace('#', '')
         const element = document.getElementById(targetId)
         if (element) {
-            const headerOffset = 80 // Account for fixed header
+            const headerOffset = 80
             const elementPosition = element.getBoundingClientRect().top
             const offsetPosition = elementPosition + window.pageYOffset - headerOffset
 
@@ -36,25 +36,30 @@ export default function Header({ isDarkMode, onToggleTheme }: HeaderProps) {
     }
 
     return (
-        <header className="fixed top-0 left-0 right-0 z-50 glass border-b border-gray-200/50 dark:border-gray-800/50">
+        <header className="fixed top-0 left-0 right-0 z-50 glass">
             <div className="container-custom">
-                <div className="flex items-center justify-between h-16 md:h-20">
+                <div className="flex items-center justify-between h-16">
                     {/* Logo */}
-                    <a href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className="flex items-center gap-3 group">
-                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center shadow-lg group-hover:shadow-glow transition-shadow duration-300">
-                            <svg className="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    <a
+                        href="#"
+                        onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                        className="flex items-center gap-2.5 group"
+                    >
+                        {/* Vercel-style logo mark */}
+                        <div className="relative w-8 h-8">
+                            <div className="absolute inset-0 bg-geist-900 dark:bg-white rounded-lg transform rotate-45 group-hover:rotate-[50deg] transition-transform duration-300" />
+                            <div className="absolute inset-[3px] bg-white dark:bg-black rounded-[5px] transform rotate-45" />
+                            <svg
+                                className="absolute inset-0 w-full h-full text-geist-900 dark:text-white"
+                                viewBox="0 0 24 24"
+                                fill="currentColor"
+                            >
+                                <path d="M12 2L2 19.5h20L12 2z" />
                             </svg>
                         </div>
-                        <div className="flex flex-col">
-                            <span className="font-display font-bold text-xl tracking-tight">
-                                <span className="gradient-text">Prob</span>
-                                <span className="text-amazon-orange">Fixora</span>
-                            </span>
-                            <span className="text-xs text-gray-500 dark:text-gray-400 -mt-1 hidden sm:block">
-                                AI Website Generator
-                            </span>
-                        </div>
+                        <span className="font-semibold text-lg tracking-tight text-geist-900 dark:text-white">
+                            ProbFixora
+                        </span>
                     </a>
 
                     {/* Desktop Navigation */}
@@ -64,7 +69,10 @@ export default function Header({ isDarkMode, onToggleTheme }: HeaderProps) {
                                 key={link.label}
                                 href={link.href}
                                 onClick={(e) => handleNavClick(e, link.href)}
-                                className="px-4 py-2 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200"
+                                className="px-3.5 py-2 text-sm font-medium text-geist-600 dark:text-geist-400 
+                                           hover:text-geist-900 dark:hover:text-white 
+                                           rounded-lg hover:bg-geist-50 dark:hover:bg-geist-900 
+                                           transition-colors duration-200"
                             >
                                 {link.label}
                             </a>
@@ -72,11 +80,14 @@ export default function Header({ isDarkMode, onToggleTheme }: HeaderProps) {
                     </nav>
 
                     {/* Right Actions */}
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2">
                         {/* Theme Toggle */}
                         <button
                             onClick={onToggleTheme}
-                            className="p-2 rounded-xl text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200"
+                            className="p-2 rounded-lg text-geist-500 dark:text-geist-400 
+                                       hover:text-geist-900 dark:hover:text-white
+                                       hover:bg-geist-100 dark:hover:bg-geist-800 
+                                       transition-colors duration-200"
                             aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
                         >
                             {isDarkMode ? (
@@ -91,7 +102,10 @@ export default function Header({ isDarkMode, onToggleTheme }: HeaderProps) {
                             href="https://github.com/probfixora"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="hidden sm:flex p-2 rounded-xl text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors duration-200"
+                            className="hidden sm:flex p-2 rounded-lg text-geist-500 dark:text-geist-400 
+                                       hover:text-geist-900 dark:hover:text-white
+                                       hover:bg-geist-100 dark:hover:bg-geist-800 
+                                       transition-colors duration-200"
                             aria-label="View on GitHub"
                         >
                             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -103,21 +117,23 @@ export default function Header({ isDarkMode, onToggleTheme }: HeaderProps) {
                         <a
                             href="#generator"
                             onClick={(e) => handleNavClick(e, '#generator')}
-                            className="hidden sm:inline-flex btn-amazon text-sm"
+                            className="hidden sm:inline-flex btn-md btn-primary"
                         >
-                            Start Creating
+                            Get Started
                         </a>
 
                         {/* Mobile Menu Toggle */}
                         <button
                             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                            className="md:hidden p-2 rounded-xl text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+                            className="md:hidden p-2 rounded-lg text-geist-600 dark:text-geist-400 
+                                       hover:bg-geist-100 dark:hover:bg-geist-800
+                                       transition-colors duration-200"
                             aria-label="Toggle menu"
                         >
                             {isMobileMenuOpen ? (
-                                <XMarkIcon className="w-6 h-6" />
+                                <XMarkIcon className="w-5 h-5" />
                             ) : (
-                                <Bars3Icon className="w-6 h-6" />
+                                <Bars3Icon className="w-5 h-5" />
                             )}
                         </button>
                     </div>
@@ -125,14 +141,17 @@ export default function Header({ isDarkMode, onToggleTheme }: HeaderProps) {
 
                 {/* Mobile Navigation */}
                 {isMobileMenuOpen && (
-                    <div className="md:hidden py-4 border-t border-gray-200 dark:border-gray-700 animate-slide-down">
+                    <div className="md:hidden py-4 border-t border-geist-200 dark:border-geist-800 animate-fade-down">
                         <nav className="flex flex-col gap-1">
                             {navLinks.map((link) => (
                                 <a
                                     key={link.label}
                                     href={link.href}
                                     onClick={(e) => handleNavClick(e, link.href)}
-                                    className="px-4 py-3 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200"
+                                    className="px-4 py-3 text-sm font-medium text-geist-600 dark:text-geist-400 
+                                               hover:text-geist-900 dark:hover:text-white 
+                                               rounded-lg hover:bg-geist-50 dark:hover:bg-geist-900 
+                                               transition-colors duration-200"
                                 >
                                     {link.label}
                                 </a>
@@ -140,9 +159,9 @@ export default function Header({ isDarkMode, onToggleTheme }: HeaderProps) {
                             <a
                                 href="#generator"
                                 onClick={(e) => handleNavClick(e, '#generator')}
-                                className="mt-2 btn-amazon text-sm text-center"
+                                className="mt-3 btn-md btn-primary text-center"
                             >
-                                Start Creating
+                                Get Started
                             </a>
                         </nav>
                     </div>

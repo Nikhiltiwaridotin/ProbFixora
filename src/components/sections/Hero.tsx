@@ -1,111 +1,160 @@
-// Purpose: Hero section with headline, description, and CTA
-import { SparklesIcon, ArrowRightIcon } from '@heroicons/react/24/outline'
+// Purpose: Vercel-inspired Hero section with Apple aesthetics
+import { ArrowRightIcon, CommandLineIcon } from '@heroicons/react/24/outline'
 
 export default function Hero() {
     return (
         <section className="relative pt-32 pb-20 md:pt-40 md:pb-32 overflow-hidden">
-            {/* Background Effects */}
-            <div className="absolute inset-0 bg-gradient-to-b from-primary-50/50 via-white to-white dark:from-amazon-dark-secondary dark:via-amazon-dark dark:to-amazon-dark -z-10" />
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-gradient-radial from-primary-500/20 via-transparent to-transparent -z-10 blur-3xl" />
+            {/* Background - Subtle gradient glow */}
+            <div className="absolute inset-0 bg-hero-glow dark:bg-hero-glow-dark -z-10" />
 
-            {/* Floating Elements */}
-            <div className="absolute top-1/4 left-10 w-20 h-20 bg-amazon-orange/10 rounded-full blur-2xl animate-float" />
-            <div className="absolute bottom-1/4 right-10 w-32 h-32 bg-primary-500/10 rounded-full blur-2xl animate-float animation-delay-500" />
+            {/* Grid pattern overlay */}
+            <div
+                className="absolute inset-0 -z-10 opacity-[0.02] dark:opacity-[0.05]"
+                style={{
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+                }}
+            />
 
             <div className="container-custom relative">
-                <div className="max-w-4xl mx-auto text-center">
+                <div className="max-w-3xl mx-auto text-center">
                     {/* Badge */}
-                    <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary-100 dark:bg-primary-900/50 text-primary-700 dark:text-primary-300 text-sm font-medium mb-8 animate-fade-in">
-                        <SparklesIcon className="w-4 h-4" />
-                        <span>AI-Powered Website Generation</span>
-                        <span className="px-2 py-0.5 rounded-full bg-amazon-orange text-amazon-dark text-xs font-bold">
-                            NEW
+                    <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full 
+                                    bg-geist-100 dark:bg-geist-900 
+                                    border border-geist-200 dark:border-geist-800
+                                    text-sm text-geist-600 dark:text-geist-400 
+                                    mb-8 animate-fade-up">
+                        <span className="flex h-2 w-2">
+                            <span className="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-accent-blue opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-accent-blue"></span>
                         </span>
+                        <span>AI-Powered Website Generation</span>
                     </div>
 
-                    {/* Main Heading */}
-                    <h1 className="heading-xl mb-6 animate-slide-up">
-                        <span className="block text-gray-900 dark:text-white">Create Stunning Websites</span>
-                        <span className="block gradient-text">In Seconds, Not Hours</span>
+                    {/* Main Heading - Apple-style */}
+                    <h1 className="heading-xl mb-6 animate-fade-up animation-delay-100">
+                        <span className="block text-geist-900 dark:text-white">
+                            Create websites with
+                        </span>
+                        <span className="block gradient-text-accent bg-[length:200%_auto] animate-gradient">
+                            a single prompt.
+                        </span>
                     </h1>
 
-                    {/* Subheading */}
-                    <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-10 max-w-2xl mx-auto animate-slide-up animation-delay-100">
-                        Transform your ideas into production-ready React + Vite + Tailwind websites
-                        with a single prompt. Beautiful, responsive, and ready to deploy.
+                    {/* Subheading - Clean and minimal */}
+                    <p className="text-lg md:text-xl text-geist-500 dark:text-geist-400 mb-10 
+                                  max-w-xl mx-auto leading-relaxed animate-fade-up animation-delay-200">
+                        Transform your ideas into production-ready React websites
+                        in seconds. Beautiful, responsive, and ready to deploy.
                     </p>
 
-                    {/* CTA Buttons */}
-                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-slide-up animation-delay-200">
+                    {/* CTA Buttons - Vercel style */}
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4 
+                                    animate-fade-up animation-delay-300">
                         <a
                             href="#generator"
-                            className="btn-amazon text-lg px-8 py-4 group"
+                            className="btn-lg btn-primary group w-full sm:w-auto"
                         >
-                            Start Creating Free
-                            <ArrowRightIcon className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                            Start Building
+                            <ArrowRightIcon className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
                         </a>
                         <a
                             href="#templates"
-                            className="btn-secondary text-lg px-8 py-4"
+                            className="btn-lg btn-secondary w-full sm:w-auto"
                         >
+                            <CommandLineIcon className="w-4 h-4" />
                             View Templates
                         </a>
                     </div>
 
-                    {/* Trust Indicators */}
-                    <div className="mt-12 flex flex-wrap items-center justify-center gap-8 text-sm text-gray-500 dark:text-gray-400 animate-fade-in animation-delay-300">
+                    {/* Trust Indicators - Minimal */}
+                    <div className="mt-14 flex flex-wrap items-center justify-center gap-8 
+                                    text-sm text-geist-500 dark:text-geist-400 
+                                    animate-fade-up animation-delay-400">
                         <div className="flex items-center gap-2">
-                            <svg className="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                            <svg className="w-4 h-4 text-success" fill="currentColor" viewBox="0 0 20 20">
                                 <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                             </svg>
-                            <span>100% Free to Use</span>
+                            <span>Free to use</span>
                         </div>
                         <div className="flex items-center gap-2">
-                            <svg className="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                            <svg className="w-4 h-4 text-success" fill="currentColor" viewBox="0 0 20 20">
                                 <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                             </svg>
-                            <span>No Account Required</span>
+                            <span>No account required</span>
                         </div>
                         <div className="flex items-center gap-2">
-                            <svg className="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                            <svg className="w-4 h-4 text-success" fill="currentColor" viewBox="0 0 20 20">
                                 <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                             </svg>
-                            <span>React + Vite + Tailwind</span>
+                            <span>Export to Vercel</span>
                         </div>
                     </div>
                 </div>
 
-                {/* Preview Mockup */}
-                <div className="mt-16 relative max-w-5xl mx-auto animate-scale-in animation-delay-300">
-                    {/* Browser Window Frame */}
-                    <div className="rounded-2xl overflow-hidden shadow-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900">
-                        {/* Browser Chrome */}
-                        <div className="flex items-center gap-2 px-4 py-3 bg-gray-100 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+                {/* Preview Mockup - Vercel-style terminal window */}
+                <div className="mt-20 relative max-w-4xl mx-auto animate-fade-up animation-delay-500">
+                    {/* Terminal Window */}
+                    <div className="rounded-xl overflow-hidden border border-geist-200 dark:border-geist-800 
+                                    shadow-vercel-lg dark:shadow-none bg-white dark:bg-geist-950">
+                        {/* Terminal Chrome */}
+                        <div className="flex items-center gap-3 px-4 py-3 bg-geist-50 dark:bg-geist-900 
+                                        border-b border-geist-200 dark:border-geist-800">
                             <div className="flex gap-2">
-                                <div className="w-3 h-3 rounded-full bg-red-500" />
-                                <div className="w-3 h-3 rounded-full bg-yellow-500" />
-                                <div className="w-3 h-3 rounded-full bg-green-500" />
+                                <div className="w-3 h-3 rounded-full bg-geist-300 dark:bg-geist-700" />
+                                <div className="w-3 h-3 rounded-full bg-geist-300 dark:bg-geist-700" />
+                                <div className="w-3 h-3 rounded-full bg-geist-300 dark:bg-geist-700" />
                             </div>
-                            <div className="flex-1 mx-4">
-                                <div className="max-w-md mx-auto px-4 py-1.5 rounded-lg bg-white dark:bg-gray-700 text-sm text-gray-500 dark:text-gray-400 text-center">
-                                    probfixora.dev/preview
+                            <div className="flex-1">
+                                <div className="max-w-sm mx-auto px-4 py-1.5 rounded-md 
+                                                bg-white dark:bg-geist-950 
+                                                border border-geist-200 dark:border-geist-800
+                                                text-xs text-geist-500 dark:text-geist-500 text-center 
+                                                font-mono">
+                                    probfixora.dev
                                 </div>
                             </div>
                         </div>
-                        {/* Preview Content */}
-                        <div className="aspect-[16/9] bg-gradient-to-br from-primary-500 via-primary-600 to-primary-800 flex items-center justify-center">
-                            <div className="text-center text-white p-8">
-                                <div className="w-20 h-20 mx-auto mb-6 rounded-2xl bg-white/20 backdrop-blur flex items-center justify-center">
-                                    <SparklesIcon className="w-10 h-10" />
+
+                        {/* Terminal Content */}
+                        <div className="bg-geist-950 p-6 min-h-[200px] font-mono text-sm">
+                            <div className="flex items-start gap-3">
+                                <span className="text-geist-500 select-none">$</span>
+                                <div>
+                                    <span className="text-geist-300">probfixora generate</span>
+                                    <span className="text-accent-cyan ml-2">"Create a modern SaaS landing page"</span>
                                 </div>
-                                <h2 className="text-3xl font-display font-bold mb-2">Your Website Preview</h2>
-                                <p className="text-white/80">Enter a prompt below to see your generated website here</p>
+                            </div>
+                            <div className="mt-4 text-geist-400">
+                                <div className="flex items-center gap-2">
+                                    <svg className="w-4 h-4 text-success animate-pulse" fill="currentColor" viewBox="0 0 8 8">
+                                        <circle cx="4" cy="4" r="3" />
+                                    </svg>
+                                    <span>Analyzing prompt...</span>
+                                </div>
+                                <div className="flex items-center gap-2 mt-2">
+                                    <svg className="w-4 h-4 text-success animate-pulse animation-delay-200" fill="currentColor" viewBox="0 0 8 8">
+                                        <circle cx="4" cy="4" r="3" />
+                                    </svg>
+                                    <span>Generating React components...</span>
+                                </div>
+                                <div className="flex items-center gap-2 mt-2">
+                                    <svg className="w-4 h-4 text-success animate-pulse animation-delay-400" fill="currentColor" viewBox="0 0 8 8">
+                                        <circle cx="4" cy="4" r="3" />
+                                    </svg>
+                                    <span>Styling with Tailwind CSS...</span>
+                                </div>
+                            </div>
+                            <div className="mt-6 pt-4 border-t border-geist-800">
+                                <span className="text-success">✓</span>
+                                <span className="text-geist-300 ml-2">Website generated successfully!</span>
+                                <span className="text-geist-500 ml-2">Ready to deploy →</span>
                             </div>
                         </div>
                     </div>
 
                     {/* Decorative Glow */}
-                    <div className="absolute -inset-4 bg-gradient-to-r from-primary-500/20 via-amazon-orange/20 to-primary-500/20 blur-3xl -z-10 rounded-3xl" />
+                    <div className="absolute -inset-4 bg-gradient-to-r from-accent-blue/10 via-accent-purple/10 to-accent-pink/10 
+                                    blur-3xl -z-10 rounded-3xl opacity-50" />
                 </div>
             </div>
         </section>

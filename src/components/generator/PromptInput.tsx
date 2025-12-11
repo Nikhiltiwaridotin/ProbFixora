@@ -1,6 +1,6 @@
-// Purpose: Main prompt input component with example prompts and generation progress
+// Purpose: Vercel-inspired prompt input with Apple aesthetics
 import { useState } from 'react'
-import { SparklesIcon, LightBulbIcon } from '@heroicons/react/24/outline'
+import { SparklesIcon, ArrowUpIcon } from '@heroicons/react/24/outline'
 
 interface PromptInputProps {
     value: string;
@@ -24,19 +24,23 @@ export default function PromptInput({
     const examplePrompts = [
         {
             title: 'SaaS Landing',
-            prompt: "Create a professional landing page for 'CloudSync Pro' — a cloud storage SaaS, color #6366F1, include hero, features (4), pricing, testimonials, contact form, tone: professional, theme: dark",
+            description: 'Professional product page',
+            prompt: "Create a professional landing page for 'CloudSync Pro' — a cloud storage SaaS, color #0070f3, include hero, features (4), pricing, testimonials, contact form",
         },
         {
             title: 'Portfolio',
-            prompt: "Build a creative portfolio for 'Alex Designer' — UI/UX designer, color #10B981, include hero, projects gallery, about, skills, contact, tone: creative, theme: light",
-        },
-        {
-            title: 'E-commerce',
-            prompt: "Create an e-commerce landing for 'TechGadgets' — electronics store, color #F59E0B, include hero, featured products, categories, deals, newsletter, tone: exciting, theme: amazon-like",
+            description: 'Creative showcase',
+            prompt: "Build a minimalist portfolio for 'Alex Designer' — UI/UX designer, color #00b894, include hero, projects gallery, about, skills, contact",
         },
         {
             title: 'Startup',
-            prompt: "Build a startup page for 'InnovateTech AI' — AI developer tools, color #0B74DE, include hero, features (3), pricing, team, FAQ, tone: confident, theme: corporate",
+            description: 'Launch page',
+            prompt: "Create a startup page for 'InnovateTech AI' — AI developer tools, color #7928ca, include hero, features (3), pricing, team, FAQ",
+        },
+        {
+            title: 'E-commerce',
+            description: 'Product store',
+            prompt: "Create an e-commerce landing for 'TechGadgets' — electronics store, color #f5a623, include hero, featured products, categories, deals, newsletter",
         },
     ]
 
@@ -54,79 +58,92 @@ export default function PromptInput({
     return (
         <div className="space-y-8">
             {/* Section Header */}
-            <div className="text-center mb-8">
-                <h2 className="heading-lg mb-3">
-                    <span className="gradient-text">Describe Your Website</span>
+            <div className="text-center mb-10">
+                <h2 className="heading-lg text-geist-900 dark:text-white mb-4">
+                    Describe your website
                 </h2>
-                <p className="text-gray-600 dark:text-gray-400 max-w-xl mx-auto">
-                    Tell us what you want to build. Include details like colors, sections,
-                    tone, and theme for the best results.
+                <p className="text-geist-500 dark:text-geist-400 max-w-lg mx-auto">
+                    Tell us what you want to build. Be specific about colors, sections, and style.
                 </p>
             </div>
 
-            {/* Main Input Form */}
+            {/* Main Input Form - Vercel terminal style */}
             <form onSubmit={handleSubmit} className="relative">
                 <div
                     className={`
-            relative rounded-2xl transition-all duration-300
-            ${isFocused ? 'ring-4 ring-primary-100 dark:ring-primary-900' : ''}
-            ${isGenerating ? 'opacity-75' : ''}
-          `}
+                        relative rounded-xl transition-all duration-300
+                        ${isFocused ? 'ring-2 ring-accent-blue/20' : ''}
+                        ${isGenerating ? 'opacity-75' : ''}
+                    `}
                 >
                     {/* Textarea */}
-                    <textarea
-                        value={value}
-                        onChange={(e) => onChange(e.target.value)}
-                        onFocus={() => setIsFocused(true)}
-                        onBlur={() => setIsFocused(false)}
-                        placeholder="Create a professional landing page for 'ProbFixora Labs' — AI developer tools, color #0B74DE, include hero, features (3), pricing, contact form, tone: confident, theme: amazon-like..."
-                        rows={5}
-                        disabled={isGenerating}
-                        className="w-full px-6 py-5 rounded-2xl bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-600 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:border-primary-500 resize-none text-lg transition-colors duration-200"
-                    />
+                    <div className="relative bg-geist-50 dark:bg-geist-900 
+                                    border border-geist-200 dark:border-geist-800 
+                                    rounded-xl overflow-hidden">
+                        <textarea
+                            value={value}
+                            onChange={(e) => onChange(e.target.value)}
+                            onFocus={() => setIsFocused(true)}
+                            onBlur={() => setIsFocused(false)}
+                            placeholder="Create a professional landing page for 'ProbFixora Labs' — AI developer tools, color #0070f3, include hero, features, pricing, contact form..."
+                            rows={4}
+                            disabled={isGenerating}
+                            className="w-full px-5 py-4 bg-transparent
+                                       text-geist-900 dark:text-white 
+                                       placeholder:text-geist-400 dark:placeholder:text-geist-600
+                                       focus:outline-none resize-none text-base"
+                        />
 
-                    {/* Character Count */}
-                    <div className="absolute bottom-4 left-6 text-sm text-gray-400">
-                        {value.length} characters
+                        {/* Bottom Bar */}
+                        <div className="flex items-center justify-between px-5 py-3 
+                                        border-t border-geist-200 dark:border-geist-800
+                                        bg-white dark:bg-geist-950">
+                            {/* Character Count */}
+                            <div className="text-sm text-geist-400">
+                                {value.length} characters
+                            </div>
+
+                            {/* Generate Button */}
+                            <button
+                                type="submit"
+                                disabled={!value.trim() || isGenerating}
+                                className="btn-md btn-primary disabled:opacity-40 group"
+                            >
+                                {isGenerating ? (
+                                    <>
+                                        <svg className="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
+                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                                        </svg>
+                                        <span>Generating...</span>
+                                    </>
+                                ) : (
+                                    <>
+                                        <SparklesIcon className="w-4 h-4" />
+                                        <span>Generate</span>
+                                        <ArrowUpIcon className="w-3 h-3 opacity-50" />
+                                    </>
+                                )}
+                            </button>
+                        </div>
                     </div>
-
-                    {/* Generate Button */}
-                    <button
-                        type="submit"
-                        disabled={!value.trim() || isGenerating}
-                        className="absolute bottom-4 right-4 btn-amazon disabled:opacity-50 disabled:cursor-not-allowed group"
-                    >
-                        {isGenerating ? (
-                            <>
-                                <svg className="animate-spin -ml-1 mr-2 h-5 w-5" fill="none" viewBox="0 0 24 24">
-                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                                </svg>
-                                Generating...
-                            </>
-                        ) : (
-                            <>
-                                <SparklesIcon className="w-5 h-5 mr-2 group-hover:animate-pulse" />
-                                Generate Website
-                            </>
-                        )}
-                    </button>
                 </div>
 
-                {/* Progress Bar (when generating) */}
+                {/* Progress Bar */}
                 {isGenerating && (
-                    <div className="mt-6 animate-fade-in">
+                    <div className="mt-6 animate-fade-up">
                         <div className="flex items-center justify-between mb-2">
-                            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                            <span className="text-sm font-medium text-geist-600 dark:text-geist-400">
                                 {currentStep}
                             </span>
-                            <span className="text-sm font-medium text-primary-600 dark:text-primary-400">
+                            <span className="text-sm font-mono text-accent-blue">
                                 {Math.round(progress)}%
                             </span>
                         </div>
-                        <div className="w-full h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                        <div className="w-full h-1 bg-geist-100 dark:bg-geist-800 rounded-full overflow-hidden">
                             <div
-                                className="h-full bg-gradient-to-r from-primary-500 to-amazon-orange rounded-full transition-all duration-500 ease-out"
+                                className="h-full bg-gradient-to-r from-accent-blue to-accent-purple 
+                                           rounded-full transition-all duration-500 ease-out"
                                 style={{ width: `${progress}%` }}
                             />
                         </div>
@@ -136,9 +153,8 @@ export default function PromptInput({
 
             {/* Example Prompts */}
             <div className="space-y-4">
-                <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
-                    <LightBulbIcon className="w-4 h-4" />
-                    <span>Try an example prompt:</span>
+                <div className="flex items-center gap-2 text-sm text-geist-400">
+                    <span>Try an example:</span>
                 </div>
 
                 <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
@@ -147,30 +163,49 @@ export default function PromptInput({
                             key={example.title}
                             onClick={() => handleExampleClick(example.prompt)}
                             disabled={isGenerating}
-                            className="text-left p-4 rounded-xl border-2 border-gray-200 dark:border-gray-700 hover:border-primary-400 dark:hover:border-primary-500 bg-white dark:bg-gray-800 hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed group"
+                            className="text-left p-4 rounded-xl 
+                                       border border-geist-200 dark:border-geist-800 
+                                       bg-white dark:bg-geist-900
+                                       hover:border-geist-300 dark:hover:border-geist-700 
+                                       hover:bg-geist-50 dark:hover:bg-geist-800
+                                       transition-all duration-200 
+                                       disabled:opacity-50 disabled:cursor-not-allowed 
+                                       group"
                         >
-                            <div className="font-semibold text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 mb-1">
+                            <div className="font-medium text-geist-900 dark:text-white 
+                                            group-hover:text-accent-blue transition-colors mb-1">
                                 {example.title}
                             </div>
-                            <div className="text-sm text-gray-500 dark:text-gray-400 line-clamp-2">
-                                {example.prompt.slice(0, 60)}...
+                            <div className="text-sm text-geist-500 dark:text-geist-500">
+                                {example.description}
                             </div>
                         </button>
                     ))}
                 </div>
             </div>
 
-            {/* Tips */}
-            <div className="p-4 rounded-xl bg-primary-50 dark:bg-primary-900/20 border border-primary-200 dark:border-primary-800">
-                <h4 className="font-semibold text-primary-800 dark:text-primary-200 mb-2">
-                    💡 Tips for better results:
+            {/* Tips - Minimal */}
+            <div className="p-4 rounded-xl bg-geist-50 dark:bg-geist-900 
+                            border border-geist-200 dark:border-geist-800">
+                <h4 className="font-medium text-geist-900 dark:text-white mb-3 flex items-center gap-2">
+                    <svg className="w-4 h-4 text-accent-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Tips for better results
                 </h4>
-                <ul className="text-sm text-primary-700 dark:text-primary-300 space-y-1">
-                    <li>• Include a site name in quotes (e.g., 'My Company')</li>
-                    <li>• Specify a primary color with hex code (e.g., #0B74DE)</li>
-                    <li>• List sections you want: hero, features, pricing, contact, etc.</li>
-                    <li>• Set a tone: professional, casual, playful, confident, formal</li>
-                    <li>• Choose a theme: light, dark, amazon-like, corporate</li>
+                <ul className="text-sm text-geist-500 dark:text-geist-400 space-y-1.5">
+                    <li className="flex items-start gap-2">
+                        <span className="text-geist-300 dark:text-geist-600">•</span>
+                        Include a site name in quotes (e.g., 'My Company')
+                    </li>
+                    <li className="flex items-start gap-2">
+                        <span className="text-geist-300 dark:text-geist-600">•</span>
+                        Specify a primary color with hex code (e.g., #0070f3)
+                    </li>
+                    <li className="flex items-start gap-2">
+                        <span className="text-geist-300 dark:text-geist-600">•</span>
+                        List sections: hero, features, pricing, contact, etc.
+                    </li>
                 </ul>
             </div>
         </div>
