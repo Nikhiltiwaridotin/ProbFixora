@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import { SparklesIcon, ArrowUpIcon, LightBulbIcon } from '@heroicons/react/24/outline'
 import { enhancePrompt, isOpenAIAvailable } from '../../utils/openai'
+import { enhancePrompt as enhancePromptGemini, isGeminiAvailable } from '../../utils/gemini'
 
 interface PromptInputProps {
     value: string;
@@ -60,17 +61,26 @@ export default function PromptInput({
     const handleEnhancePrompt = async () => {
         if (!value.trim() || isEnhancing || isGenerating) return
 
-        if (!isOpenAIAvailable()) {
-            alert('OpenAI API key not configured. Please add VITE_OPENAI_API_KEY in environment variables.')
-            return
+        if (isOpenAIAvailable()) {
+            const result = await enhancePrompt(value)
+            if (result.success) {
+                onChange(result.enhancedPrompt)
+                setIsEnhancing(false)
+                return
+            }
         }
 
-        setIsEnhancing(true)
-        const result = await enhancePrompt(value)
-        if (result.success) {
-            onChange(result.enhancedPrompt)
-        } else {
+        // Fallback to Gemini if OpenAI is undefined or failed
+        if (isGeminiAvailable()) {
+            const result = await enhancePromptGemini(value)
+            if (result.success) {
+                onChange(result.enhancedPrompt)
+                setIsEnhancing(false)
+                return
+            }
             alert('Failed to enhance prompt: ' + (result.error || 'Unknown error'))
+        } else if (!isOpenAIAvailable()) {
+            alert('No AI API keys configured. Please add VITE_OPENAI_API_KEY or VITE_GEMINI_API_KEY.')
         }
         setIsEnhancing(false)
     }

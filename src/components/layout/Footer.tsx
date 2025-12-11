@@ -1,18 +1,36 @@
 // Purpose: Vercel-inspired Footer with Apple aesthetics
-
-// Smooth scroll to section handler
-const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId)
-    if (element) {
-        const headerOffset = 80
-        const elementPosition = element.getBoundingClientRect().top
-        const offsetPosition = elementPosition + window.pageYOffset - headerOffset
-        window.scrollTo({ top: offsetPosition, behavior: 'smooth' })
-    }
-}
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 export default function Footer() {
     const currentYear = new Date().getFullYear()
+    const location = useLocation()
+    const navigate = useNavigate()
+
+    // Smooth scroll to section handler
+    const scrollToSection = (sectionId: string) => {
+        if (location.pathname !== '/') {
+            navigate('/', { state: { scrollTo: sectionId } })
+            // Fallback scroll after navigation
+            setTimeout(() => {
+                const element = document.getElementById(sectionId)
+                if (element) {
+                    const headerOffset = 80
+                    const elementPosition = element.getBoundingClientRect().top
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset
+                    window.scrollTo({ top: offsetPosition, behavior: 'smooth' })
+                }
+            }, 100)
+            return
+        }
+
+        const element = document.getElementById(sectionId)
+        if (element) {
+            const headerOffset = 80
+            const elementPosition = element.getBoundingClientRect().top
+            const offsetPosition = elementPosition + window.pageYOffset - headerOffset
+            window.scrollTo({ top: offsetPosition, behavior: 'smooth' })
+        }
+    }
 
     const footerSections = [
         {
@@ -41,8 +59,8 @@ export default function Footer() {
         {
             title: 'Legal',
             links: [
-                { label: 'Privacy Policy', href: '/privacy.html', external: true },
-                { label: 'Terms of Service', href: '/terms.html', external: true },
+                { label: 'Privacy Policy', path: '/privacy' },
+                { label: 'Terms of Service', path: '/terms' },
             ],
         },
     ]
@@ -84,7 +102,7 @@ export default function Footer() {
                 <div className="grid grid-cols-2 md:grid-cols-6 gap-8">
                     {/* Brand Column */}
                     <div className="col-span-2">
-                        <a href="/" className="flex items-center gap-2.5 mb-4">
+                        <Link to="/" className="flex items-center gap-2.5 mb-4">
                             {/* Logo */}
                             <div className="relative w-7 h-7">
                                 <svg
@@ -98,7 +116,7 @@ export default function Footer() {
                             <span className="font-semibold text-geist-900 dark:text-white">
                                 ProbFixora
                             </span>
-                        </a>
+                        </Link>
                         <p className="text-sm text-geist-500 dark:text-geist-500 mb-6 max-w-xs">
                             Generate stunning, production-ready websites from natural language prompts.
                         </p>
@@ -129,9 +147,18 @@ export default function Footer() {
                                 {section.title}
                             </h3>
                             <ul className="space-y-3">
-                                {section.links.map((link: { label: string; action?: () => void; href?: string; external?: boolean }) => (
+                                {section.links.map((link: any) => (
                                     <li key={link.label}>
-                                        {link.action ? (
+                                        {link.path ? (
+                                            <Link
+                                                to={link.path}
+                                                className="text-sm text-geist-500 dark:text-geist-500 
+                                                           hover:text-geist-900 dark:hover:text-white 
+                                                           transition-colors duration-200"
+                                            >
+                                                {link.label}
+                                            </Link>
+                                        ) : link.action ? (
                                             <button
                                                 onClick={link.action}
                                                 className="text-sm text-geist-500 dark:text-geist-500 

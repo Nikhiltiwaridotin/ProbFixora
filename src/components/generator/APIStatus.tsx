@@ -22,6 +22,12 @@ export default function APIStatus({ className = '' }: APIStatusProps) {
             configured: !!import.meta.env.VITE_OPENAI_API_KEY,
             url: 'https://platform.openai.com/api-keys',
         },
+        gemini: {
+            name: 'Gemini',
+            description: 'AI Generation (Google)',
+            configured: !!import.meta.env.VITE_GEMINI_API_KEY,
+            url: 'https://makersuite.google.com/app/apikey',
+        },
         unsplash: {
             name: 'Unsplash',
             description: 'Free images',

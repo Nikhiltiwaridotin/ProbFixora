@@ -1,5 +1,6 @@
 // Purpose: Vercel-inspired header with Apple aesthetics
 import { useState } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { Bars3Icon, XMarkIcon, SunIcon, MoonIcon } from '@heroicons/react/24/outline'
 
 interface HeaderProps {
@@ -9,6 +10,8 @@ interface HeaderProps {
 
 export default function Header({ isDarkMode, onToggleTheme }: HeaderProps) {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+    const location = useLocation()
+    const navigate = useNavigate()
 
     const navLinks = [
         { label: 'Generator', href: '#generator' },
@@ -21,6 +24,13 @@ export default function Header({ isDarkMode, onToggleTheme }: HeaderProps) {
     const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
         e.preventDefault()
         const targetId = href.replace('#', '')
+
+        if (location.pathname !== '/') {
+            navigate('/', { state: { scrollTo: targetId } })
+            setIsMobileMenuOpen(false)
+            return
+        }
+
         const element = document.getElementById(targetId)
         if (element) {
             const headerOffset = 80
@@ -35,14 +45,24 @@ export default function Header({ isDarkMode, onToggleTheme }: HeaderProps) {
         setIsMobileMenuOpen(false)
     }
 
+    // Handle home click
+    const handleHomeClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+        e.preventDefault()
+        if (location.pathname !== '/') {
+            navigate('/')
+        } else {
+            window.scrollTo({ top: 0, behavior: 'smooth' })
+        }
+    }
+
     return (
-        <header className="fixed top-0 left-0 right-0 z-50 glass">
+        <header className="fixed top-0 left-0 right-0 z-50 glass border-b border-geist-200 dark:border-geist-800">
             <div className="container-custom">
                 <div className="flex items-center justify-between h-16">
                     {/* Logo */}
-                    <a
-                        href="#"
-                        onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                    <Link
+                        to="/"
+                        onClick={handleHomeClick}
                         className="flex items-center gap-2.5 group"
                     >
                         {/* Vercel-style logo mark */}
@@ -60,7 +80,7 @@ export default function Header({ isDarkMode, onToggleTheme }: HeaderProps) {
                         <span className="font-semibold text-lg tracking-tight text-geist-900 dark:text-white">
                             ProbFixora
                         </span>
-                    </a>
+                    </Link>
 
                     {/* Desktop Navigation */}
                     <nav className="hidden md:flex items-center gap-1">
