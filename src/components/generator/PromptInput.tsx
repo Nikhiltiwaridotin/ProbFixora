@@ -1,6 +1,7 @@
 // Purpose: Vercel-inspired prompt input with Apple aesthetics
 import { useState } from 'react'
-import { SparklesIcon, ArrowUpIcon } from '@heroicons/react/24/outline'
+import { SparklesIcon, ArrowUpIcon, LightBulbIcon } from '@heroicons/react/24/outline'
+import { enhancePrompt, isOpenAIAvailable } from '../../utils/openai'
 
 interface PromptInputProps {
     value: string;
@@ -20,6 +21,7 @@ export default function PromptInput({
     currentStep,
 }: PromptInputProps) {
     const [isFocused, setIsFocused] = useState(false)
+    const [isEnhancing, setIsEnhancing] = useState(false)
 
     const examplePrompts = [
         {
@@ -53,6 +55,17 @@ export default function PromptInput({
 
     const handleExampleClick = (prompt: string) => {
         onChange(prompt)
+    }
+
+    const handleEnhancePrompt = async () => {
+        if (!value.trim() || isEnhancing || isGenerating) return
+
+        setIsEnhancing(true)
+        const result = await enhancePrompt(value)
+        if (result.success) {
+            onChange(result.enhancedPrompt)
+        }
+        setIsEnhancing(false)
     }
 
     return (
@@ -103,28 +116,58 @@ export default function PromptInput({
                                 {value.length} characters
                             </div>
 
-                            {/* Generate Button */}
-                            <button
-                                type="submit"
-                                disabled={!value.trim() || isGenerating}
-                                className="btn-md btn-primary disabled:opacity-40 group"
-                            >
-                                {isGenerating ? (
-                                    <>
-                                        <svg className="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
-                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                                        </svg>
-                                        <span>Generating...</span>
-                                    </>
-                                ) : (
-                                    <>
-                                        <SparklesIcon className="w-4 h-4" />
-                                        <span>Generate</span>
-                                        <ArrowUpIcon className="w-3 h-3 opacity-50" />
-                                    </>
+                            {/* Buttons */}
+                            <div className="flex items-center gap-2">
+                                {/* Enhance Prompt Button */}
+                                {isOpenAIAvailable() && value.trim() && !isGenerating && (
+                                    <button
+                                        type="button"
+                                        onClick={handleEnhancePrompt}
+                                        disabled={isEnhancing}
+                                        className="btn-md bg-gradient-to-r from-purple-500 to-pink-500 
+                                                   text-white hover:from-purple-600 hover:to-pink-600
+                                                   disabled:opacity-50 transition-all duration-300"
+                                    >
+                                        {isEnhancing ? (
+                                            <>
+                                                <svg className="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
+                                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                                                </svg>
+                                                <span>Enhancing...</span>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <LightBulbIcon className="w-4 h-4" />
+                                                <span>Enhance</span>
+                                            </>
+                                        )}
+                                    </button>
                                 )}
-                            </button>
+
+                                {/* Generate Button */}
+                                <button
+                                    type="submit"
+                                    disabled={!value.trim() || isGenerating}
+                                    className="btn-md btn-primary disabled:opacity-40 group"
+                                >
+                                    {isGenerating ? (
+                                        <>
+                                            <svg className="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
+                                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                                            </svg>
+                                            <span>Generating...</span>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <SparklesIcon className="w-4 h-4" />
+                                            <span>Generate</span>
+                                            <ArrowUpIcon className="w-3 h-3 opacity-50" />
+                                        </>
+                                    )}
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

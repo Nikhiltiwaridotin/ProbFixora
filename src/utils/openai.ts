@@ -11,31 +11,59 @@ export function isOpenAIAvailable(): boolean {
 }
 
 /**
- * System prompt for website generation - optimized for React + Tailwind
+ * PREMIUM System prompt for website generation - Creates stunning, modern websites
  */
-const SYSTEM_PROMPT = `You are an expert web developer specialized in creating beautiful, modern websites using React and Tailwind CSS.
+const SYSTEM_PROMPT = `You are an elite web developer and UI/UX designer creating STUNNING, PREMIUM websites.
 
-When given a prompt, you will generate a COMPLETE, SINGLE-FILE React component that can be rendered directly in a browser.
+DESIGN PHILOSOPHY:
+- Create designs that WOW users instantly - like Apple, Vercel, Linear, or Stripe websites
+- Use bold typography, striking gradients, and smooth animations
+- Every element should feel intentional and premium
+- Dark themes with vibrant accents are preferred unless specified otherwise
 
-REQUIREMENTS:
-1. Generate a complete, self-contained HTML page with inline React and Tailwind
-2. Use CDN links for React, ReactDOM, Babel, and Tailwind CSS
-3. The design should be modern, beautiful, and responsive
-4. Use a cohesive color scheme based on the user's request
-5. Include appropriate sections like hero, features, pricing, testimonials, contact, footer
-6. Add smooth animations and hover effects
-7. Make it mobile-responsive
-8. Include realistic placeholder content
+VISUAL REQUIREMENTS:
+1. TYPOGRAPHY: Use elegant font stacks (Inter, SF Pro, system-ui). Large headlines (4xl-7xl), generous letter-spacing
+2. COLORS: Use rich gradients (purple→blue, cyan→pink, orange→red), glassmorphism effects, subtle glows
+3. SPACING: Generous whitespace, section padding (py-24 or more), breathing room
+4. ANIMATIONS: Smooth transitions (transition-all duration-500), hover transforms, fade-ins
+5. EFFECTS: Backdrop blur, box shadows, gradient borders, animated backgrounds
 
-OUTPUT FORMAT:
-Return ONLY valid HTML code starting with <!DOCTYPE html>. Do not include any markdown code blocks or explanations.
+SECTIONS TO INCLUDE (based on prompt):
+- HERO: Full-screen with animated gradient background, large headline, glowing CTA buttons
+- FEATURES: Icon cards with hover effects, gradient icons, clean grid layout
+- TESTIMONIALS: Quote cards with avatars, star ratings, subtle animations
+- PRICING: 3-tier cards, highlighted popular plan, feature checkmarks
+- CTA: Bold gradient background, compelling copy
+- FOOTER: Clean, organized links, social icons
 
-The HTML should:
-- Use <script type="text/babel"> for React components
-- Include Tailwind CSS via CDN
-- Include React, ReactDOM, and Babel via CDN
-- Render the main App component to root div
-- Be immediately renderable in a browser`
+TECHNICAL REQUIREMENTS:
+1. Single HTML file with embedded React and Tailwind via CDN
+2. Use <script type="text/babel"> for React JSX
+3. Include all CDN links: React 18, ReactDOM, Babel, Tailwind CSS
+4. Mobile-responsive design (use md:, lg: breakpoints)
+5. Use Heroicons or Lucide icons via CDN or inline SVGs
+6. Add realistic, engaging placeholder content
+
+OUTPUT: Return ONLY the complete HTML code starting with <!DOCTYPE html>. No markdown blocks or explanations.`
+
+/**
+ * System prompt for enhancing user prompts
+ */
+const ENHANCE_PROMPT_SYSTEM = `You are an expert prompt engineer for AI website generation.
+
+Your job is to take a simple website request and transform it into a detailed, specific prompt that will generate an AMAZING, STUNNING website.
+
+RULES:
+1. Keep the user's core idea but add rich details
+2. Suggest specific color schemes (use modern palettes like purple/cyan, blue/pink)
+3. Specify design style (glassmorphism, neumorphism, minimalist, bold)
+4. Add specific sections (hero, features, testimonials, pricing, footer)
+5. Include animations and interactions
+6. Suggest a compelling tagline or headline
+7. Keep the enhanced prompt under 200 words
+8. Make it specific and actionable
+
+OUTPUT: Return ONLY the enhanced prompt text. No explanations or markdown.`
 
 export interface AIGenerationResult {
     success: boolean
@@ -49,6 +77,66 @@ export interface StreamCallbacks {
     onToken?: (token: string) => void
     onComplete?: (html: string) => void
     onError?: (error: string) => void
+}
+
+export interface EnhanceResult {
+    success: boolean
+    enhancedPrompt: string
+    error?: string
+}
+
+/**
+ * Enhance a user's prompt to generate better websites
+ */
+export async function enhancePrompt(userPrompt: string): Promise<EnhanceResult> {
+    if (!isOpenAIAvailable()) {
+        return {
+            success: false,
+            enhancedPrompt: userPrompt,
+            error: 'OpenAI not available'
+        }
+    }
+
+    try {
+        const response = await fetch(OPENAI_API_URL, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${OPENAI_API_KEY}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                model: 'gpt-4o-mini',
+                messages: [
+                    { role: 'system', content: ENHANCE_PROMPT_SYSTEM },
+                    { role: 'user', content: `Enhance this website request: "${userPrompt}"` }
+                ],
+                max_tokens: 500,
+                temperature: 0.8,
+            }),
+        })
+
+        if (!response.ok) {
+            return {
+                success: false,
+                enhancedPrompt: userPrompt,
+                error: 'Failed to enhance prompt'
+            }
+        }
+
+        const data = await response.json()
+        const enhanced = data.choices?.[0]?.message?.content?.trim() || userPrompt
+
+        return {
+            success: true,
+            enhancedPrompt: enhanced
+        }
+    } catch {
+        return {
+            success: false,
+            enhancedPrompt: userPrompt,
+            error: 'Network error'
+        }
+    }
 }
 
 /**
