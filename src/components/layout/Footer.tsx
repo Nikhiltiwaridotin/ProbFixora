@@ -41,8 +41,8 @@ export default function Footer() {
         {
             title: 'Legal',
             links: [
-                { label: 'Privacy Policy', href: '/privacy.html', external: false },
-                { label: 'Terms of Service', href: '/terms.html', external: false },
+                { label: 'Privacy Policy', href: '/privacy.html', external: true },
+                { label: 'Terms of Service', href: '/terms.html', external: true },
             ],
         },
     ]
