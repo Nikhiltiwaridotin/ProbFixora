@@ -16,6 +16,12 @@ export default function APIStatus({ className = '' }: APIStatusProps) {
 
     // Check which APIs are configured
     const apis = {
+        openai: {
+            name: 'OpenAI',
+            description: 'AI Generation',
+            configured: !!import.meta.env.VITE_OPENAI_API_KEY,
+            url: 'https://platform.openai.com/api-keys',
+        },
         unsplash: {
             name: 'Unsplash',
             description: 'Free images',
@@ -27,12 +33,6 @@ export default function APIStatus({ className = '' }: APIStatusProps) {
             description: 'Stock photos',
             configured: !!import.meta.env.VITE_PEXELS_API_KEY,
             url: 'https://www.pexels.com/api/',
-        },
-        huggingface: {
-            name: 'Hugging Face',
-            description: 'AI generation',
-            configured: !!import.meta.env.VITE_HUGGINGFACE_API_KEY,
-            url: 'https://huggingface.co/settings/tokens',
         },
         formspree: {
             name: 'Formspree',

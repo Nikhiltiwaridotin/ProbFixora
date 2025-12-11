@@ -1,5 +1,5 @@
 // Purpose: Main App component - Vercel-inspired with Apple aesthetics
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Header from './components/layout/Header'
 import Hero from './components/sections/Hero'
 import PromptInput from './components/generator/PromptInput'
@@ -10,6 +10,7 @@ import APIStatus from './components/generator/APIStatus'
 import Footer from './components/layout/Footer'
 import { GeneratorState } from './types'
 import { generateWebsite } from './utils/generator'
+import { generateWebsiteWithOpenAI, isOpenAIAvailable } from './utils/openai'
 
 function App() {
     // Theme state
@@ -30,6 +31,11 @@ function App() {
         error: null,
     })
 
+    // AI generation state
+    const [_aiGeneratedHTML, setAiGeneratedHTML] = useState<string>('')
+    const [_streamText, setStreamText] = useState<string>('')
+    const previewWindowRef = useRef<Window | null>(null)
+
     // Show preview panel
     const [showPreview, setShowPreview] = useState(false)
 
@@ -42,41 +48,110 @@ function App() {
         }
     }, [isDarkMode])
 
-    // Handle prompt submission
+    // Handle prompt submission with OpenAI
     const handleGenerate = async (prompt: string) => {
         setGeneratorState({
             prompt,
             isGenerating: true,
             progress: 0,
-            currentStep: 'Analyzing prompt...',
+            currentStep: 'Initializing AI...',
             output: null,
             error: null,
         })
+        setStreamText('')
+        setAiGeneratedHTML('')
 
-        try {
-            const output = await generateWebsite(prompt, (progress, step) => {
+        // Check if OpenAI is available
+        if (isOpenAIAvailable()) {
+            // Use OpenAI for generation
+            try {
+                // Open preview window immediately
+                const previewWindow = window.open('/preview.html', '_blank')
+                previewWindowRef.current = previewWindow
+
                 setGeneratorState(prev => ({
                     ...prev,
-                    progress,
-                    currentStep: step,
+                    progress: 10,
+                    currentStep: 'Connecting to AI...',
                 }))
-            })
 
-            setGeneratorState(prev => ({
-                ...prev,
-                isGenerating: false,
-                progress: 100,
-                currentStep: 'Complete!',
-                output,
-            }))
+                const result = await generateWebsiteWithOpenAI(prompt, {
+                    onStart: () => {
+                        setGeneratorState(prev => ({
+                            ...prev,
+                            progress: 20,
+                            currentStep: 'AI is generating your website...',
+                        }))
+                    },
+                    onToken: (token) => {
+                        setStreamText(prev => prev + token)
+                        setGeneratorState(prev => ({
+                            ...prev,
+                            progress: Math.min(90, prev.progress + 0.5),
+                            currentStep: 'AI is writing code...',
+                        }))
+                    },
+                    onComplete: (html) => {
+                        setAiGeneratedHTML(html)
+                        // Send to preview window
+                        if (previewWindow && !previewWindow.closed) {
+                            // Store in localStorage as backup
+                            localStorage.setItem('probfixora_generated_html', html)
+                            // Also send via postMessage
+                            previewWindow.postMessage({ type: 'WEBSITE_GENERATED', html }, '*')
+                        }
+                    },
+                    onError: (error) => {
+                        if (previewWindow && !previewWindow.closed) {
+                            previewWindow.postMessage({ type: 'GENERATION_ERROR', error }, '*')
+                        }
+                    }
+                })
 
-            setShowPreview(true)
-        } catch (error) {
-            setGeneratorState(prev => ({
-                ...prev,
-                isGenerating: false,
-                error: error instanceof Error ? error.message : 'Generation failed',
-            }))
+                if (result.success) {
+                    setGeneratorState(prev => ({
+                        ...prev,
+                        isGenerating: false,
+                        progress: 100,
+                        currentStep: 'Website generated! Opening preview...',
+                    }))
+                } else {
+                    throw new Error(result.error || 'Generation failed')
+                }
+            } catch (error) {
+                setGeneratorState(prev => ({
+                    ...prev,
+                    isGenerating: false,
+                    error: error instanceof Error ? error.message : 'AI generation failed',
+                }))
+            }
+        } else {
+            // Fallback to template-based generation
+            try {
+                const output = await generateWebsite(prompt, (progress, step) => {
+                    setGeneratorState(prev => ({
+                        ...prev,
+                        progress,
+                        currentStep: step,
+                    }))
+                })
+
+                setGeneratorState(prev => ({
+                    ...prev,
+                    isGenerating: false,
+                    progress: 100,
+                    currentStep: 'Complete!',
+                    output,
+                }))
+
+                setShowPreview(true)
+            } catch (error) {
+                setGeneratorState(prev => ({
+                    ...prev,
+                    isGenerating: false,
+                    error: error instanceof Error ? error.message : 'Generation failed',
+                }))
+            }
         }
     }
 
