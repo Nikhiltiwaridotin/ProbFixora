@@ -41,8 +41,8 @@ export default function Footer() {
         {
             title: 'Legal',
             links: [
-                { label: 'Privacy Policy', href: 'https://github.com/Nikhiltiwaridotin/ProbFixora/blob/main/PRIVACY.md', external: true },
-                { label: 'Terms of Service', href: 'https://github.com/Nikhiltiwaridotin/ProbFixora/blob/main/TERMS.md', external: true },
+                { label: 'Privacy Policy', href: '/privacy.html', external: false },
+                { label: 'Terms of Service', href: '/terms.html', external: false },
             ],
         },
     ]
