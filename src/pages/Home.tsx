@@ -64,14 +64,25 @@ export default function Home() {
                             progress: 20,
                             currentStep: 'AI is generating your website...',
                         }))
+                        // Send progress to preview window
+                        if (previewWindow && !previewWindow.closed) {
+                            previewWindow.postMessage({ type: 'GENERATION_PROGRESS', progress: 20, step: 'AI is generating your website...' }, '*')
+                        }
                     },
                     onToken: (token) => {
                         setStreamText(prev => prev + token)
-                        setGeneratorState(prev => ({
-                            ...prev,
-                            progress: Math.min(90, prev.progress + 0.5),
-                            currentStep: 'AI is writing code...',
-                        }))
+                        setGeneratorState(prev => {
+                            const newProgress = Math.min(90, prev.progress + 0.5)
+                            // Send progress to preview window
+                            if (previewWindow && !previewWindow.closed) {
+                                previewWindow.postMessage({ type: 'GENERATION_PROGRESS', progress: newProgress, step: 'AI is writing code...' }, '*')
+                            }
+                            return {
+                                ...prev,
+                                progress: newProgress,
+                                currentStep: 'AI is writing code...',
+                            }
+                        })
                     },
                     onComplete: (html) => {
                         setAiGeneratedHTML(html)
@@ -127,14 +138,25 @@ export default function Home() {
                             progress: 20,
                             currentStep: 'Gemini is generating your website...',
                         }))
+                        // Send progress to preview window
+                        if (previewWindow && !previewWindow.closed) {
+                            previewWindow.postMessage({ type: 'GENERATION_PROGRESS', progress: 20, step: 'Gemini is generating your website...' }, '*')
+                        }
                     },
                     onToken: (token) => {
                         setStreamText(prev => prev + token)
-                        setGeneratorState(prev => ({
-                            ...prev,
-                            progress: Math.min(90, prev.progress + 0.5),
-                            currentStep: 'Gemini is writing code...',
-                        }))
+                        setGeneratorState(prev => {
+                            const newProgress = Math.min(90, prev.progress + 0.5)
+                            // Send progress to preview window
+                            if (previewWindow && !previewWindow.closed) {
+                                previewWindow.postMessage({ type: 'GENERATION_PROGRESS', progress: newProgress, step: 'Gemini is writing code...' }, '*')
+                            }
+                            return {
+                                ...prev,
+                                progress: newProgress,
+                                currentStep: 'Gemini is writing code...',
+                            }
+                        })
                     },
                     onComplete: (html) => {
                         setAiGeneratedHTML(html)
